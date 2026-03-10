@@ -76,21 +76,21 @@ const Tree = {
         if (onAdd) {
             const addBtn = document.createElement('button');
             addBtn.textContent = '+';
-            addBtn.title = 'Přidat';
+            addBtn.title = 'Add';
             addBtn.addEventListener('click', (e) => { e.stopPropagation(); onAdd(); });
             actions.appendChild(addBtn);
         }
         if (onEdit) {
             const editBtn = document.createElement('button');
             editBtn.textContent = '\u270E';
-            editBtn.title = 'Upravit';
+            editBtn.title = 'Edit';
             editBtn.addEventListener('click', (e) => { e.stopPropagation(); onEdit(); });
             actions.appendChild(editBtn);
         }
         if (onDelete) {
             const delBtn = document.createElement('button');
             delBtn.textContent = '\u2715';
-            delBtn.title = 'Smazat';
+            delBtn.title = 'Delete';
             delBtn.addEventListener('click', (e) => { e.stopPropagation(); onDelete(); });
             actions.appendChild(delBtn);
         }
@@ -126,57 +126,57 @@ const Tree = {
     },
 
     addSection(factoryId) {
-        Modal.show('Nová sekce', [
-            { name: 'name', label: 'Název', type: 'text', required: true },
-            { name: 'description', label: 'Popis', type: 'textarea' },
+        Modal.show('New Section', [
+            { name: 'name', label: 'Name', type: 'text', required: true },
+            { name: 'description', label: 'Description', type: 'textarea' },
         ], async (data) => { data.factory_id = factoryId; await API.createSection(data); this.refresh(); });
     },
     addEquipment(sectionId) {
-        Modal.show('Nové zařízení', [
-            { name: 'name', label: 'Název', type: 'text', required: true },
-            { name: 'description', label: 'Popis', type: 'textarea' },
+        Modal.show('New Equipment', [
+            { name: 'name', label: 'Name', type: 'text', required: true },
+            { name: 'description', label: 'Description', type: 'textarea' },
         ], async (data) => { data.section_id = sectionId; await API.createEquipment(data); this.refresh(); });
     },
     addComponent(equipmentId) {
-        Modal.show('Nová komponenta', [
-            { name: 'name', label: 'Název', type: 'text', required: true },
-            { name: 'description', label: 'Popis', type: 'textarea' },
+        Modal.show('New Component', [
+            { name: 'name', label: 'Name', type: 'text', required: true },
+            { name: 'description', label: 'Description', type: 'textarea' },
         ], async (data) => { data.equipment_id = equipmentId; await API.createComponent(data); this.refresh(); });
     },
     editFactory(f) {
-        Modal.show('Upravit továrnu', [
-            { name: 'name', label: 'Název', type: 'text', required: true, value: f.name },
-            { name: 'description', label: 'Popis', type: 'textarea', value: f.description || '' },
+        Modal.show('Edit Plant', [
+            { name: 'name', label: 'Name', type: 'text', required: true, value: f.name },
+            { name: 'description', label: 'Description', type: 'textarea', value: f.description || '' },
         ], async (data) => { await API.updateFactory(f.id, data); this.refresh(); });
     },
     editSection(s) {
-        Modal.show('Upravit sekci', [
-            { name: 'name', label: 'Název', type: 'text', required: true, value: s.name },
-            { name: 'description', label: 'Popis', type: 'textarea', value: s.description || '' },
+        Modal.show('Edit Section', [
+            { name: 'name', label: 'Name', type: 'text', required: true, value: s.name },
+            { name: 'description', label: 'Description', type: 'textarea', value: s.description || '' },
         ], async (data) => { await API.updateSection(s.id, data); this.refresh(); });
     },
     editEquipment(e) {
-        Modal.show('Upravit zařízení', [
-            { name: 'name', label: 'Název', type: 'text', required: true, value: e.name },
-            { name: 'description', label: 'Popis', type: 'textarea', value: e.description || '' },
+        Modal.show('Edit Equipment', [
+            { name: 'name', label: 'Name', type: 'text', required: true, value: e.name },
+            { name: 'description', label: 'Description', type: 'textarea', value: e.description || '' },
         ], async (data) => { await API.updateEquipment(e.id, data); this.refresh(); });
     },
     editComponent(c) {
-        Modal.show('Upravit komponentu', [
-            { name: 'name', label: 'Název', type: 'text', required: true, value: c.name },
-            { name: 'description', label: 'Popis', type: 'textarea', value: c.description || '' },
+        Modal.show('Edit Component', [
+            { name: 'name', label: 'Name', type: 'text', required: true, value: c.name },
+            { name: 'description', label: 'Description', type: 'textarea', value: c.description || '' },
         ], async (data) => { await API.updateComponent(c.id, data); this.refresh(); });
     },
     deleteFactory(f) {
-        Modal.confirm(`Opravdu smazat továrnu "${f.name}" a vše v ní?`, async () => { await API.deleteFactory(f.id); this.refresh(); Detail.clear(); });
+        Modal.confirm(`Delete plant "${f.name}" and everything in it?`, async () => { await API.deleteFactory(f.id); this.refresh(); Detail.clear(); });
     },
     deleteSection(s) {
-        Modal.confirm(`Opravdu smazat sekci "${s.name}" a vše v ní?`, async () => { await API.deleteSection(s.id); this.refresh(); Detail.clear(); });
+        Modal.confirm(`Delete section "${s.name}" and everything in it?`, async () => { await API.deleteSection(s.id); this.refresh(); Detail.clear(); });
     },
     deleteEquipment(e) {
-        Modal.confirm(`Opravdu smazat zařízení "${e.name}" a vše v něm?`, async () => { await API.deleteEquipment(e.id); this.refresh(); Detail.clear(); });
+        Modal.confirm(`Delete equipment "${e.name}" and everything in it?`, async () => { await API.deleteEquipment(e.id); this.refresh(); Detail.clear(); });
     },
     deleteComponent(c) {
-        Modal.confirm(`Opravdu smazat komponentu "${c.name}"?`, async () => { await API.deleteComponent(c.id); this.refresh(); Detail.clear(); });
+        Modal.confirm(`Delete component "${c.name}"?`, async () => { await API.deleteComponent(c.id); this.refresh(); Detail.clear(); });
     },
 };

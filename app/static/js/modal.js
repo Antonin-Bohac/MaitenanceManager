@@ -28,8 +28,8 @@ const Modal = {
             html += `</div>`;
         });
         html += `<div class="modal-buttons">`;
-        html += `<button type="button" class="btn" onclick="Modal.hide()">Zrušit</button>`;
-        html += `<button type="submit" class="btn btn-primary">Uložit</button>`;
+        html += `<button type="button" class="btn" onclick="Modal.hide()">Cancel</button>`;
+        html += `<button type="submit" class="btn btn-primary">Save</button>`;
         html += `</div></form></div>`;
 
         this.overlay.innerHTML = html;
@@ -52,7 +52,7 @@ const Modal = {
                 await onSubmit(data);
                 this.hide();
             } catch (err) {
-                alert('Chyba: ' + err.message);
+                alert('Error: ' + err.message);
             }
         });
 
@@ -62,11 +62,11 @@ const Modal = {
 
     confirm(message, onConfirm) {
         let html = `<div class="modal">`;
-        html += `<h3>Potvrzení</h3>`;
+        html += `<h3>Confirmation</h3>`;
         html += `<p style="margin-bottom:16px; color: var(--text-secondary)">${message}</p>`;
         html += `<div class="modal-buttons">`;
-        html += `<button class="btn" onclick="Modal.hide()">Zrušit</button>`;
-        html += `<button class="btn btn-danger" id="modal-confirm-btn">Smazat</button>`;
+        html += `<button class="btn" onclick="Modal.hide()">Cancel</button>`;
+        html += `<button class="btn btn-danger" id="modal-confirm-btn">Delete</button>`;
         html += `</div></div>`;
 
         this.overlay.innerHTML = html;
@@ -77,7 +77,7 @@ const Modal = {
                 await onConfirm();
                 this.hide();
             } catch (err) {
-                alert('Chyba: ' + err.message);
+                alert('Error: ' + err.message);
             }
         });
     },

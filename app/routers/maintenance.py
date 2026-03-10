@@ -1,8 +1,8 @@
 from datetime import date, datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from app.database import get_db
-from app.models import MaintenanceTask, MaintenancePlan
+from app.models import MaintenanceTask, MaintenancePlan, Equipment, Component, Section, Factory
 from app.schemas import (
     MaintenanceTaskCreate, MaintenanceTaskUpdate, MaintenanceTaskOut,
     MaintenancePlanCreate, MaintenancePlanUpdate, MaintenancePlanOut,
@@ -131,4 +131,80 @@ def maintenance_overview(db: Session = Depends(get_db)):
     return {
         "overdue": [MaintenanceTaskOut.model_validate(t).model_dump() for t in all_overdue],
         "upcoming": [MaintenanceTaskOut.model_validate(t).model_dump() for t in upcoming],
+    }
+
+
+@router.get("/dashboard")
+def dashboard_data(db: Session = Depends(get_db)):
+    today = date.today()
+    # Auto-mark overdue
+    overdue_tasks = db.query(MaintenanceTask).filter(
+        MaintenanceTask.due_date < today, MaintenanceTask.status == "planned"
+    ).all()
+    for task in overdue_tasks:
+        task.status = "overdue"
+    if overdue_tasks:
+        db.commit()
+
+    # All tasks with relationships
+    tasks = (
+        db.query(MaintenanceTask)
+        .options(
+            joinedload(MaintenanceTask.equipment).joinedload(Equipment.section).joinedload(Section.factory),
+            joinedload(MaintenanceTask.component).joinedload(Component.equipment),
+        )
+        .order_by(MaintenanceTask.due_date.asc())
+        .all()
+    )
+
+    rows = []
+    for t in tasks:
+        equipment_name = t.equipment.name if t.equipment else (t.component.equipment.name if t.component and t.component.equipment else "")
+        component_name = t.component.name if t.component else ""
+        section_name = ""
+        factory_name = ""
+        if t.equipment and t.equipment.section:
+            section_name = t.equipment.section.name
+            if t.equipment.section.factory:
+                factory_name = t.equipment.section.factory.name
+        elif t.component and t.component.equipment and t.component.equipment.section:
+            section_name = t.component.equipment.section.name
+            if t.component.equipment.section.factory:
+                factory_name = t.component.equipment.section.factory.name
+
+        rows.append({
+            "id": t.id,
+            "title": t.title,
+            "description": t.description,
+            "due_date": t.due_date.isoformat() if t.due_date else None,
+            "status": t.status,
+            "equipment_name": equipment_name,
+            "component_name": component_name,
+            "section_name": section_name,
+            "factory_name": factory_name,
+            "equipment_id": t.equipment_id,
+            "component_id": t.component_id,
+            "plan_id": t.plan_id,
+            "created_at": t.created_at.isoformat() if t.created_at else None,
+            "completed_at": t.completed_at.isoformat() if t.completed_at else None,
+        })
+
+    # Stats
+    total_tasks = len(rows)
+    overdue_count = sum(1 for r in rows if r["status"] == "overdue")
+    planned_count = sum(1 for r in rows if r["status"] == "planned")
+    completed_count = sum(1 for r in rows if r["status"] == "completed")
+    total_equipment = db.query(Equipment).count()
+    total_plans = db.query(MaintenancePlan).count()
+
+    return {
+        "tasks": rows,
+        "stats": {
+            "total_tasks": total_tasks,
+            "overdue": overdue_count,
+            "planned": planned_count,
+            "completed": completed_count,
+            "total_equipment": total_equipment,
+            "total_plans": total_plans,
+        },
     }

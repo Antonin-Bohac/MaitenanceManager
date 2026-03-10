@@ -6,7 +6,7 @@ const Detail = {
     },
 
     clear() {
-        this.el.innerHTML = '<div class="empty-state"><p>Vyberte položku z navigace.</p></div>';
+        this.el.innerHTML = '<div class="empty-state"><p>Select an item from the tree.</p></div>';
     },
 
     async show(type, id) {
@@ -31,14 +31,14 @@ const Detail = {
         return `
             <div class="detail-header"><h2>\u{1F3ED} ${this.esc(f.name)}</h2></div>
             ${f.description ? `<p class="detail-description">${this.esc(f.description)}</p>` : ''}
-            <div class="detail-section"><h3>Informace</h3><p style="font-size:13px; color:var(--text-secondary)">Typ: Továrna</p></div>`;
+            <div class="detail-section"><h3>Information</h3><p style="font-size:13px; color:var(--text-secondary)">Type: Plant</p></div>`;
     },
 
     renderSection(s) {
         return `
             <div class="detail-header"><h2>\u{1F4C1} ${this.esc(s.name)}</h2></div>
             ${s.description ? `<p class="detail-description">${this.esc(s.description)}</p>` : ''}
-            <div class="detail-section"><h3>Informace</h3><p style="font-size:13px; color:var(--text-secondary)">Typ: Sekce</p></div>`;
+            <div class="detail-section"><h3>Information</h3><p style="font-size:13px; color:var(--text-secondary)">Type: Section</p></div>`;
     },
 
     renderEquipment(e) {
@@ -46,7 +46,7 @@ const Detail = {
         return `
             <div class="detail-header"><h2>\u2699\uFE0F ${this.esc(e.name)}</h2></div>
             ${e.description ? `<p class="detail-description">${this.esc(e.description)}</p>` : ''}
-            <div id="detail-extra">Načítám...</div>`;
+            <div id="detail-extra">Loading...</div>`;
     },
 
     renderComponent(c) {
@@ -54,7 +54,7 @@ const Detail = {
         return `
             <div class="detail-header"><h2>\u{1F529} ${this.esc(c.name)}</h2></div>
             ${c.description ? `<p class="detail-description">${this.esc(c.description)}</p>` : ''}
-            <div id="detail-extra">Načítám...</div>`;
+            <div id="detail-extra">Loading...</div>`;
     },
 
     async loadEquipmentDetails(e) {
@@ -84,9 +84,9 @@ const Detail = {
     renderDetailsBlock(docs, tasks, plans, ownerKey, ownerId) {
         return `
             <div class="detail-section">
-                <h3>Dokumentace <button class="btn btn-sm" data-action="add-doc">+ Přidat</button></h3>
+                <h3>Documentation <button class="btn btn-sm" data-action="add-doc">+ Add</button></h3>
                 <div class="item-list">
-                    ${docs.length === 0 ? '<p style="font-size:13px;color:var(--text-secondary)">Žádná dokumentace</p>' : ''}
+                    ${docs.length === 0 ? '<p style="font-size:13px;color:var(--text-secondary)">No documentation</p>' : ''}
                     ${docs.map(d => `
                         <div class="item-card">
                             <a href="${this.esc(d.url)}" target="_blank" class="doc-link">\u{1F4C4} ${this.esc(d.name)}</a>
@@ -96,9 +96,9 @@ const Detail = {
                 </div>
             </div>
             <div class="detail-section">
-                <h3>Údržba - úkoly <button class="btn btn-sm" data-action="add-task">+ Přidat</button></h3>
+                <h3>Maintenance Tasks <button class="btn btn-sm" data-action="add-task">+ Add</button></h3>
                 <div class="item-list">
-                    ${tasks.length === 0 ? '<p style="font-size:13px;color:var(--text-secondary)">Žádné úkoly</p>' : ''}
+                    ${tasks.length === 0 ? '<p style="font-size:13px;color:var(--text-secondary)">No tasks</p>' : ''}
                     ${tasks.map(t => `
                         <div class="item-card">
                             <div>
@@ -114,17 +114,17 @@ const Detail = {
                 </div>
             </div>
             <div class="detail-section">
-                <h3>Údržba - plány <button class="btn btn-sm" data-action="add-plan">+ Přidat</button></h3>
+                <h3>Maintenance Plans <button class="btn btn-sm" data-action="add-plan">+ Add</button></h3>
                 <div class="item-list">
-                    ${plans.length === 0 ? '<p style="font-size:13px;color:var(--text-secondary)">Žádné plány</p>' : ''}
+                    ${plans.length === 0 ? '<p style="font-size:13px;color:var(--text-secondary)">No plans</p>' : ''}
                     ${plans.map(p => `
                         <div class="item-card">
                             <div>
                                 <div class="item-name">${this.esc(p.title)}</div>
-                                <div class="item-meta">Každých ${p.interval_days} dní | Další: ${p.next_due}</div>
+                                <div class="item-meta">Every ${p.interval_days} days | Next: ${p.next_due}</div>
                             </div>
                             <div style="display:flex;gap:4px;">
-                                <button class="btn btn-sm" data-action="complete-plan" data-id="${p.id}">\u2713 Hotovo</button>
+                                <button class="btn btn-sm" data-action="complete-plan" data-id="${p.id}">\u2713 Done</button>
                                 <button class="btn btn-sm btn-danger" data-action="del-plan" data-id="${p.id}">\u2715</button>
                             </div>
                         </div>
@@ -143,28 +143,28 @@ const Detail = {
                 const action = btn.dataset.action;
                 const id = btn.dataset.id ? parseInt(btn.dataset.id) : null;
                 if (action === 'add-doc') {
-                    Modal.show('Přidat dokumentaci', [
-                        { name: 'name', label: 'Název', type: 'text', required: true },
+                    Modal.show('Add Documentation', [
+                        { name: 'name', label: 'Name', type: 'text', required: true },
                         { name: 'url', label: 'URL', type: 'url', required: true },
                     ], async (data) => { data[ownerKey] = ownerId; await API.createDoc(data); this.reloadDetails(ownerKey, ownerId); });
                 } else if (action === 'del-doc') {
                     await API.deleteDoc(id); this.reloadDetails(ownerKey, ownerId);
                 } else if (action === 'add-task') {
-                    Modal.show('Nový úkol údržby', [
-                        { name: 'title', label: 'Název', type: 'text', required: true },
-                        { name: 'description', label: 'Popis', type: 'textarea' },
-                        { name: 'due_date', label: 'Termín', type: 'date', required: true },
+                    Modal.show('New Maintenance Task', [
+                        { name: 'title', label: 'Title', type: 'text', required: true },
+                        { name: 'description', label: 'Description', type: 'textarea' },
+                        { name: 'due_date', label: 'Due Date', type: 'date', required: true },
                     ], async (data) => { data[ownerKey] = ownerId; await API.createTask(data); this.reloadDetails(ownerKey, ownerId); });
                 } else if (action === 'complete-task') {
                     await API.updateTask(id, { status: 'completed' }); this.reloadDetails(ownerKey, ownerId);
                 } else if (action === 'del-task') {
                     await API.deleteTask(id); this.reloadDetails(ownerKey, ownerId);
                 } else if (action === 'add-plan') {
-                    Modal.show('Nový plán údržby', [
-                        { name: 'title', label: 'Název', type: 'text', required: true },
-                        { name: 'description', label: 'Popis', type: 'textarea' },
-                        { name: 'interval_days', label: 'Interval (dny)', type: 'number', required: true },
-                        { name: 'next_due', label: 'První termín', type: 'date', required: true },
+                    Modal.show('New Maintenance Plan', [
+                        { name: 'title', label: 'Title', type: 'text', required: true },
+                        { name: 'description', label: 'Description', type: 'textarea' },
+                        { name: 'interval_days', label: 'Interval (days)', type: 'number', required: true },
+                        { name: 'next_due', label: 'First Due Date', type: 'date', required: true },
                     ], async (data) => { data[ownerKey] = ownerId; await API.createPlan(data); this.reloadDetails(ownerKey, ownerId); });
                 } else if (action === 'complete-plan') {
                     await API.completePlan(id); this.reloadDetails(ownerKey, ownerId);
