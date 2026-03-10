@@ -7,6 +7,13 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Maintenance Manager")
 
-# Routers will be added here (BEFORE static mount)
+from app.routers import factories, sections, equipment, components, documentation, maintenance, tree
+app.include_router(factories.router)
+app.include_router(sections.router)
+app.include_router(equipment.router)
+app.include_router(components.router)
+app.include_router(documentation.router)
+app.include_router(maintenance.router)
+app.include_router(tree.router)
 
 app.mount("/", StaticFiles(directory=str(Path(__file__).parent / "static"), html=True), name="static")
