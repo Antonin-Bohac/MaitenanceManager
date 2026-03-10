@@ -2,12 +2,11 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from app.database import Base, engine
+from app.routers import factories, sections, equipment, components, documentation, maintenance, tree
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Maintenance Manager")
-
-from app.routers import factories, sections, equipment, components, documentation, maintenance, tree
 app.include_router(factories.router)
 app.include_router(sections.router)
 app.include_router(equipment.router)
