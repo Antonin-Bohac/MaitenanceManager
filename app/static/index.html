@@ -1,5 +1,35 @@
 <!DOCTYPE html>
 <html lang="cs">
-<head><meta charset="UTF-8"><title>Maintenance Manager</title></head>
-<body><h1>Maintenance Manager</h1></body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Manager</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="topbar">
+        <h1>Maintenance Manager</h1>
+        <button id="theme-toggle" title="Přepnout motiv">&#9680;</button>
+    </header>
+    <div class="layout">
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h2>Navigace</h2>
+                <button id="add-factory-btn" class="btn-icon" title="Přidat továrnu">+</button>
+            </div>
+            <div id="tree"></div>
+        </aside>
+        <main id="detail" class="detail">
+            <div class="empty-state">
+                <p>Vyberte položku z navigace nebo přidejte novou továrnu.</p>
+            </div>
+        </main>
+    </div>
+    <div id="modal-overlay" class="modal-overlay hidden"></div>
+    <script src="/js/api.js"></script>
+    <script src="/js/modal.js"></script>
+    <script src="/js/tree.js"></script>
+    <script src="/js/detail.js"></script>
+    <script src="/js/app.js"></script>
+</body>
 </html>
