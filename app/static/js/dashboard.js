@@ -130,6 +130,18 @@ const Dashboard = {
                 }
             });
         });
+
+        // Row click opens detail panel
+        tbody.querySelectorAll('tr').forEach(row => {
+            row.style.cursor = 'pointer';
+            row.addEventListener('click', (e) => {
+                if (e.target.closest('[data-action]')) return;
+                const taskId = row.querySelector('[data-id]')?.dataset.id;
+                if (taskId) {
+                    DetailPane.open(parseInt(taskId), Dashboard.data);
+                }
+            });
+        });
     },
 
     async loadPlans() {

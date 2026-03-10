@@ -7,12 +7,14 @@ from app.schemas import DocumentationCreate, DocumentationUpdate, DocumentationO
 router = APIRouter(prefix="/api/documentation", tags=["documentation"])
 
 @router.get("", response_model=list[DocumentationOut])
-def list_documentation(equipment_id: int | None = Query(None), component_id: int | None = Query(None), db: Session = Depends(get_db)):
+def list_documentation(equipment_id: int | None = Query(None), component_id: int | None = Query(None), task_id: int | None = Query(None), db: Session = Depends(get_db)):
     q = db.query(Documentation)
     if equipment_id:
         q = q.filter(Documentation.equipment_id == equipment_id)
     if component_id:
         q = q.filter(Documentation.component_id == component_id)
+    if task_id:
+        q = q.filter(Documentation.task_id == task_id)
     return q.all()
 
 @router.post("", response_model=DocumentationOut)

@@ -40,3 +40,10 @@ def test_delete_doc(client, ids):
     client.delete(f"/api/documentation/{did}")
     r = client.get(f"/api/documentation/{did}")
     assert r.status_code == 404
+
+def test_list_docs_by_task(client, ids):
+    task = client.post("/api/maintenance/tasks", json={"title": "T", "due_date": "2026-04-01", "equipment_id": ids["equipment_id"]}).json()
+    client.post("/api/documentation", json={"name": "TaskDoc", "url": "/api/uploads/test.pdf", "task_id": task["id"]})
+    r = client.get(f"/api/documentation?task_id={task['id']}")
+    assert len(r.json()) == 1
+    assert r.json()[0]["task_id"] == task["id"]

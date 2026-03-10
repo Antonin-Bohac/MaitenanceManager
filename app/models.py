@@ -56,11 +56,14 @@ class Documentation(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(200), nullable=False)
     url = Column(String(500), nullable=False)
+    file_path = Column(String(500), nullable=True)
     equipment_id = Column(Integer, ForeignKey("equipment.id", ondelete="CASCADE"), nullable=True)
     component_id = Column(Integer, ForeignKey("components.id", ondelete="CASCADE"), nullable=True)
+    task_id = Column(Integer, ForeignKey("maintenance_tasks.id", ondelete="CASCADE"), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     equipment = relationship("Equipment", back_populates="documentation")
     component = relationship("Component", back_populates="documentation")
+    task = relationship("MaintenanceTask", back_populates="documentation")
 
 
 class MaintenanceTask(Base):
@@ -79,6 +82,7 @@ class MaintenanceTask(Base):
     equipment = relationship("Equipment", back_populates="maintenance_tasks")
     component = relationship("Component", back_populates="maintenance_tasks")
     plan = relationship("MaintenancePlan", back_populates="tasks")
+    documentation = relationship("Documentation", back_populates="task", cascade="all, delete-orphan")
 
 
 class MaintenancePlan(Base):

@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Modal.init();
     Tree.init();
     Detail.init();
+    DetailPane.init();
 
     // Theme toggle
     const themeToggle = document.getElementById('theme-toggle');
@@ -74,6 +75,28 @@ document.addEventListener('DOMContentLoaded', () => {
             await API.createFactory(data);
             Tree.refresh();
         });
+    });
+
+    // Mobile sidebar toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        sidebarBackdrop.classList.remove('active');
+    }
+
+    mobileMenuBtn.addEventListener('click', () => {
+        const isOpen = sidebar.classList.toggle('open');
+        sidebarBackdrop.classList.toggle('active', isOpen);
+    });
+
+    sidebarBackdrop.addEventListener('click', closeSidebar);
+
+    // Close sidebar when navigating on mobile
+    navItems.forEach(item => {
+        item.addEventListener('click', closeSidebar);
     });
 
     // Initial load

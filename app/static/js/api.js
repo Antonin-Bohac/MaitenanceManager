@@ -48,4 +48,16 @@ const API = {
     deletePlan: (id) => API.del(`/api/maintenance/plans/${id}`),
     completePlan: (id) => API.put(`/api/maintenance/plans/${id}/complete`),
     getOverview: () => API.get('/api/maintenance/overview'),
+    getTask: (id) => API.get(`/api/maintenance/tasks/${id}`),
+    getTaskDocs: (taskId) => API.get(`/api/documentation?task_id=${taskId}`),
+    async uploadFile(file) {
+        const form = new FormData();
+        form.append('file', file);
+        const r = await fetch('/api/uploads', { method: 'POST', body: form });
+        if (!r.ok) {
+            const text = await r.text();
+            throw new Error(`${r.status}: ${text}`);
+        }
+        return r.json();
+    },
 };

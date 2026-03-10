@@ -79,9 +79,11 @@ class ComponentOut(BaseModel):
 # --- Documentation ---
 class DocumentationCreate(BaseModel):
     name: str
-    url: str
+    url: str = ""
+    file_path: str | None = None
     equipment_id: int | None = None
     component_id: int | None = None
+    task_id: int | None = None
 
 class DocumentationUpdate(BaseModel):
     name: str | None = None
@@ -91,8 +93,10 @@ class DocumentationOut(BaseModel):
     id: int
     name: str
     url: str
+    file_path: str | None
     equipment_id: int | None
     component_id: int | None
+    task_id: int | None
     created_at: datetime
     model_config = {"from_attributes": True}
 
