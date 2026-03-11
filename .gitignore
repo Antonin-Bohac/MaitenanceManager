@@ -3,6 +3,7 @@
 __pycache__/
 *.pyc
 *.db
+!seed/maintenance.db
 data/
 .pytest_cache/
 *:Zone.Identifier
