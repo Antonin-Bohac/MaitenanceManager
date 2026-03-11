@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from app.database import Base, engine
-from app.routers import factories, sections, equipment, components, documentation, maintenance, tree, uploads, translations
+from app.routers import factories, sections, equipment, components, documentation, maintenance, tree, uploads, translations, checklist, activity
 
 Base.metadata.create_all(bind=engine)
 
@@ -19,6 +19,8 @@ app.include_router(maintenance.router)
 app.include_router(tree.router)
 app.include_router(uploads.router)
 app.include_router(translations.router)
+app.include_router(checklist.router)
+app.include_router(activity.router)
 
 app.mount("/css", StaticFiles(directory=str(STATIC_DIR / "css")), name="css")
 app.mount("/js", StaticFiles(directory=str(STATIC_DIR / "js")), name="js")

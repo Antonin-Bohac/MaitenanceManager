@@ -2,7 +2,7 @@ from datetime import date, datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, joinedload
 from app.database import get_db
-from app.models import MaintenanceTask, MaintenancePlan, Equipment, Component, Section, Factory
+from app.models import MaintenanceTask, MaintenancePlan, Equipment, Component, Section, Factory, TaskActivityLog
 from app.schemas import (
     MaintenanceTaskCreate, MaintenanceTaskUpdate, MaintenanceTaskOut,
     MaintenancePlanCreate, MaintenancePlanUpdate, MaintenancePlanOut,
@@ -23,6 +23,8 @@ def list_tasks(equipment_id: int | None = Query(None), component_id: int | None 
 def create_task(data: MaintenanceTaskCreate, db: Session = Depends(get_db)):
     task = MaintenanceTask(**data.model_dump())
     db.add(task)
+    db.flush()
+    db.add(TaskActivityLog(task_id=task.id, action="task_created", detail=task.title))
     db.commit()
     db.refresh(task)
     return task
@@ -40,6 +42,21 @@ def update_task(task_id: int, data: MaintenanceTaskUpdate, db: Session = Depends
     if not task:
         raise HTTPException(404, "Task not found")
     update = data.model_dump(exclude_unset=True)
+
+    # Track changes for activity log
+    tracked_fields = ["status", "priority", "assignee", "notes", "estimated_minutes", "due_date"]
+    for field in tracked_fields:
+        if field in update:
+            old_val = getattr(task, field)
+            new_val = update[field]
+            if old_val != new_val:
+                if field == "notes":
+                    db.add(TaskActivityLog(task_id=task_id, action="notes_edited", detail=""))
+                elif field == "due_date":
+                    db.add(TaskActivityLog(task_id=task_id, action="due_date_changed", detail=f"{old_val} → {new_val}"))
+                else:
+                    db.add(TaskActivityLog(task_id=task_id, action=f"{field}_changed", detail=f"{old_val} → {new_val}"))
+
     if update.get("status") == "completed" and task.status != "completed":
         update["completed_at"] = datetime.utcnow()
     for key, val in update.items():
