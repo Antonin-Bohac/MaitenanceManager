@@ -183,45 +183,106 @@
                     <div class="detail-panel-header">
                         <div>
                             <h3 id="detail-title" class="detail-panel-title"></h3>
-                            <div id="detail-path" class="detail-panel-path"></div>
                         </div>
                         <button id="detail-close" class="btn-icon" title="Close">✕</button>
                     </div>
 
-                    <div class="detail-panel-badges" id="detail-badges"></div>
+                    <div id="detail-breadcrumb" class="detail-breadcrumb"></div>
+
+                    <div class="detail-meta-grid" id="detail-meta-grid">
+                        <div class="detail-meta-item">
+                            <span class="detail-meta-label" data-i18n="th_status">Status</span>
+                            <select id="detail-status-select" class="detail-meta-select">
+                                <option value="planned" data-i18n="status_planned">Planned</option>
+                                <option value="in_progress" data-i18n="status_in_progress">In Progress</option>
+                                <option value="completed" data-i18n="status_completed">Completed</option>
+                                <option value="overdue" data-i18n="status_overdue">Overdue</option>
+                            </select>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="detail-meta-label" data-i18n="detail_priority">Priority</span>
+                            <select id="detail-priority-select" class="detail-meta-select">
+                                <option value="low" data-i18n="priority_low">Low</option>
+                                <option value="medium" data-i18n="priority_medium">Medium</option>
+                                <option value="high" data-i18n="priority_high">High</option>
+                                <option value="critical" data-i18n="priority_critical">Critical</option>
+                            </select>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="detail-meta-label" data-i18n="detail_assignee">Assignee</span>
+                            <div class="detail-meta-editable">
+                                <span id="detail-assignee-display" class="detail-meta-value"></span>
+                                <input id="detail-assignee-input" class="detail-meta-input hidden" type="text">
+                            </div>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="detail-meta-label" data-i18n="detail_due_date">Due Date</span>
+                            <div class="detail-meta-editable">
+                                <span id="detail-due-display" class="detail-meta-value"></span>
+                                <input id="detail-due-input" class="detail-meta-input hidden" type="date">
+                            </div>
+                        </div>
+                        <div class="detail-meta-item">
+                            <span class="detail-meta-label" data-i18n="detail_estimated">Est. Duration</span>
+                            <div class="detail-meta-editable">
+                                <span id="detail-duration-display" class="detail-meta-value"></span>
+                                <input id="detail-duration-input" class="detail-meta-input hidden" type="number" min="0" placeholder="min">
+                            </div>
+                        </div>
+                        <div class="detail-meta-item hidden" id="detail-plan-info-container">
+                            <span class="detail-meta-label" data-i18n="detail_plan_info">Plan Info</span>
+                            <span id="detail-plan-info" class="detail-meta-value"></span>
+                        </div>
+                    </div>
 
                     <div class="detail-panel-section">
-                        <div class="detail-panel-label">Description</div>
+                        <div class="detail-panel-label" data-i18n="detail_description">Description</div>
                         <div id="detail-description" class="detail-panel-text"></div>
                     </div>
 
                     <div class="detail-panel-section">
                         <div class="detail-panel-label-row">
-                            <span class="detail-panel-label">Notes</span>
-                            <button id="detail-notes-edit" class="detail-panel-link">Edit</button>
+                            <span class="detail-panel-label" data-i18n="detail_checklist">Checklist</span>
+                            <span id="detail-checklist-progress" class="detail-checklist-progress"></span>
+                        </div>
+                        <div id="detail-checklist-list" class="detail-checklist-list"></div>
+                        <div class="detail-checklist-add">
+                            <input id="detail-checklist-input" type="text" class="detail-checklist-input" data-i18n-placeholder="detail_add_item" placeholder="Add item...">
+                            <button id="detail-checklist-add-btn" class="btn-icon" title="Add">+</button>
+                        </div>
+                    </div>
+
+                    <div class="detail-panel-section">
+                        <div class="detail-panel-label-row">
+                            <span class="detail-panel-label" data-i18n="detail_notes">Notes</span>
+                            <button id="detail-notes-edit" class="detail-panel-link" data-i18n="btn_edit">Edit</button>
                         </div>
                         <div id="detail-notes-display" class="detail-panel-text"></div>
                         <div id="detail-notes-editor" class="detail-notes-editor hidden">
                             <textarea id="detail-notes-textarea" class="detail-notes-textarea" rows="4"></textarea>
                             <div class="detail-notes-actions">
-                                <button id="detail-notes-save" class="btn btn-primary btn-sm">Save</button>
-                                <button id="detail-notes-cancel" class="btn btn-sm">Cancel</button>
+                                <button id="detail-notes-save" class="btn btn-primary btn-sm" data-i18n="btn_save">Save</button>
+                                <button id="detail-notes-cancel" class="btn btn-sm" data-i18n="btn_cancel">Cancel</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="detail-panel-section">
-                        <div class="detail-panel-label">Documents</div>
+                        <div class="detail-panel-label" data-i18n="detail_documents">Documents</div>
                         <div id="detail-docs-list" class="detail-docs-list"></div>
                         <div id="detail-upload-area" class="detail-upload-area">
                             <input type="file" id="detail-file-input" hidden>
-                            <div class="detail-upload-label">📎 Drop files or click to upload</div>
+                            <div class="detail-upload-label">📎 <span data-i18n="detail_upload">Drop files or click to upload</span></div>
                         </div>
                     </div>
 
+                    <div class="detail-panel-section">
+                        <div class="detail-panel-label" data-i18n="detail_activity">Activity</div>
+                        <div id="detail-activity-list" class="detail-activity-list"></div>
+                    </div>
+
                     <div class="detail-panel-actions">
-                        <button id="detail-complete-btn" class="btn btn-success">✓ Complete</button>
-                        <button id="detail-delete-btn" class="btn btn-danger btn-sm">Delete</button>
+                        <button id="detail-delete-btn" class="btn btn-danger btn-sm" data-i18n="btn_delete">Delete</button>
                     </div>
                 </div>
             </div>

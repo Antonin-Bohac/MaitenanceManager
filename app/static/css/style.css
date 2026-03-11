@@ -971,6 +971,190 @@ body {
 .detail-panel-actions { display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border); margin-top: auto; }
 .detail-panel-actions .btn-success { flex: 1; justify-content: center; }
 
+/* Tree breadcrumb */
+.detail-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    padding: 8px 0;
+    margin-bottom: 8px;
+}
+.detail-breadcrumb-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: rgba(59,130,246,0.1);
+    font-size: 11px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+.detail-breadcrumb-pill.active {
+    background: rgba(59,130,246,0.2);
+    color: var(--accent);
+    font-weight: 600;
+    border: 1px solid rgba(59,130,246,0.3);
+}
+.detail-breadcrumb-arrow {
+    color: var(--text-muted);
+    font-size: 10px;
+}
+
+/* Metadata grid */
+.detail-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding: 10px;
+    background: var(--bg-body);
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+}
+.detail-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.detail-meta-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+.detail-meta-value {
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 2px 0;
+}
+.detail-meta-value:hover {
+    color: var(--accent);
+}
+.detail-meta-select {
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+.detail-meta-input {
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border-focus);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    width: 100%;
+}
+.detail-meta-editable {
+    min-height: 22px;
+}
+
+/* Priority colors */
+.detail-meta-select.priority-low { color: var(--text-secondary); }
+.detail-meta-select.priority-medium { color: var(--warning); }
+.detail-meta-select.priority-high { color: #f97316; }
+.detail-meta-select.priority-critical { color: var(--danger); }
+
+/* Checklist */
+.detail-checklist-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.detail-checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+.detail-checklist-item.completed {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+.detail-checklist-item input[type="checkbox"] {
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+.detail-checklist-item .checklist-remove {
+    margin-left: auto;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 11px;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+.detail-checklist-item:hover .checklist-remove {
+    opacity: 1;
+}
+.detail-checklist-progress {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+.detail-checklist-add {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+}
+.detail-checklist-input {
+    flex: 1;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
+/* Activity log */
+.detail-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.detail-activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-light);
+}
+.detail-activity-item:last-child {
+    border-bottom: none;
+}
+.detail-activity-icon {
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+.detail-activity-text {
+    flex: 1;
+    color: var(--text-secondary);
+}
+.detail-activity-detail {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+.detail-activity-time {
+    font-size: 10px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
 /* Mobile menu button - hidden by default, shown on mobile */
 .mobile-menu-btn {
     display: none;

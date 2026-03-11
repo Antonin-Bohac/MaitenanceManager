@@ -50,6 +50,12 @@ const API = {
     getOverview: () => API.get('/api/maintenance/overview'),
     getTask: (id) => API.get(`/api/maintenance/tasks/${id}`),
     getTaskDocs: (taskId) => API.get(`/api/documentation?task_id=${taskId}`),
+    getChecklist: (taskId) => API.get(`/api/maintenance/tasks/${taskId}/checklist`),
+    addChecklistItem: (taskId, data) => API.post(`/api/maintenance/tasks/${taskId}/checklist`, data),
+    updateChecklistItem: (taskId, itemId, data) => API.put(`/api/maintenance/tasks/${taskId}/checklist/${itemId}`, data),
+    deleteChecklistItem: (taskId, itemId) => API.del(`/api/maintenance/tasks/${taskId}/checklist/${itemId}`),
+    getActivity: (taskId) => API.get(`/api/maintenance/tasks/${taskId}/activity`),
+    upsertTranslation: (data) => API.put('/api/translations', data),
     async uploadFile(file) {
         const form = new FormData();
         form.append('file', file);
