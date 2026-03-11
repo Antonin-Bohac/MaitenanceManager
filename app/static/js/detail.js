@@ -6,7 +6,7 @@ const Detail = {
     },
 
     clear() {
-        this.el.innerHTML = '<div class="empty-state"><p>Select an item from the tree.</p></div>';
+        this.el.innerHTML = `<div class="empty-state"><p>${t('equipment_empty')}</p></div>`;
     },
 
     async show(type, id) {
@@ -31,14 +31,14 @@ const Detail = {
         return `
             <div class="detail-header"><h2>\u{1F3ED} ${this.esc(f.name)}</h2></div>
             ${f.description ? `<p class="detail-description">${this.esc(f.description)}</p>` : ''}
-            <div class="detail-section"><h3>Information</h3><p style="font-size:13px; color:var(--text-secondary)">Type: Plant</p></div>`;
+            <div class="detail-section"><h3>Information</h3><p style="font-size:13px; color:var(--text-secondary)">${t('detail_type_plant')}</p></div>`;
     },
 
     renderSection(s) {
         return `
             <div class="detail-header"><h2>\u{1F4C1} ${this.esc(s.name)}</h2></div>
             ${s.description ? `<p class="detail-description">${this.esc(s.description)}</p>` : ''}
-            <div class="detail-section"><h3>Information</h3><p style="font-size:13px; color:var(--text-secondary)">Type: Section</p></div>`;
+            <div class="detail-section"><h3>Information</h3><p style="font-size:13px; color:var(--text-secondary)">${t('detail_type_section')}</p></div>`;
     },
 
     renderEquipment(e) {
@@ -84,9 +84,9 @@ const Detail = {
     renderDetailsBlock(docs, tasks, plans, ownerKey, ownerId) {
         return `
             <div class="detail-section">
-                <h3>Documentation <button class="btn btn-sm" data-action="add-doc">+ Add</button></h3>
+                <h3>${t('detail_documentation')} <button class="btn btn-sm" data-action="add-doc">+ Add</button></h3>
                 <div class="item-list">
-                    ${docs.length === 0 ? '<p style="font-size:13px;color:var(--text-secondary)">No documentation</p>' : ''}
+                    ${docs.length === 0 ? `<p style="font-size:13px;color:var(--text-secondary)">${t('detail_no_documentation')}</p>` : ''}
                     ${docs.map(d => `
                         <div class="item-card">
                             <a href="${this.esc(d.url)}" target="_blank" class="doc-link">\u{1F4C4} ${this.esc(d.name)}</a>
@@ -96,35 +96,35 @@ const Detail = {
                 </div>
             </div>
             <div class="detail-section">
-                <h3>Maintenance Tasks <button class="btn btn-sm" data-action="add-task">+ Add</button></h3>
+                <h3>${t('detail_maintenance_tasks')} <button class="btn btn-sm" data-action="add-task">+ Add</button></h3>
                 <div class="item-list">
-                    ${tasks.length === 0 ? '<p style="font-size:13px;color:var(--text-secondary)">No tasks</p>' : ''}
-                    ${tasks.map(t => `
+                    ${tasks.length === 0 ? `<p style="font-size:13px;color:var(--text-secondary)">${t('detail_no_tasks')}</p>` : ''}
+                    ${tasks.map(task => `
                         <div class="item-card">
                             <div>
-                                <div class="item-name">${this.esc(t.title)}</div>
-                                <div class="item-meta">${t.due_date} <span class="status status-${t.status}">${t.status}</span></div>
+                                <div class="item-name">${this.esc(task.title)}</div>
+                                <div class="item-meta">${task.due_date} <span class="status status-${task.status}">${task.status}</span></div>
                             </div>
                             <div style="display:flex;gap:4px;">
-                                ${t.status === 'planned' || t.status === 'overdue' ? `<button class="btn btn-sm" data-action="complete-task" data-id="${t.id}">\u2713</button>` : ''}
-                                <button class="btn btn-sm btn-danger" data-action="del-task" data-id="${t.id}">\u2715</button>
+                                ${task.status === 'planned' || task.status === 'overdue' ? `<button class="btn btn-sm" data-action="complete-task" data-id="${task.id}">\u2713</button>` : ''}
+                                <button class="btn btn-sm btn-danger" data-action="del-task" data-id="${task.id}">\u2715</button>
                             </div>
                         </div>
                     `).join('')}
                 </div>
             </div>
             <div class="detail-section">
-                <h3>Maintenance Plans <button class="btn btn-sm" data-action="add-plan">+ Add</button></h3>
+                <h3>${t('detail_maintenance_plans')} <button class="btn btn-sm" data-action="add-plan">+ Add</button></h3>
                 <div class="item-list">
-                    ${plans.length === 0 ? '<p style="font-size:13px;color:var(--text-secondary)">No plans</p>' : ''}
+                    ${plans.length === 0 ? `<p style="font-size:13px;color:var(--text-secondary)">${t('detail_no_plans')}</p>` : ''}
                     ${plans.map(p => `
                         <div class="item-card">
                             <div>
                                 <div class="item-name">${this.esc(p.title)}</div>
-                                <div class="item-meta">Every ${p.interval_days} days | Next: ${p.next_due}</div>
+                                <div class="item-meta">${t('detail_every_days', { days: p.interval_days, date: p.next_due })}</div>
                             </div>
                             <div style="display:flex;gap:4px;">
-                                <button class="btn btn-sm" data-action="complete-plan" data-id="${p.id}">\u2713 Done</button>
+                                <button class="btn btn-sm" data-action="complete-plan" data-id="${p.id}">${t('btn_complete')}</button>
                                 <button class="btn btn-sm btn-danger" data-action="del-plan" data-id="${p.id}">\u2715</button>
                             </div>
                         </div>
@@ -143,28 +143,28 @@ const Detail = {
                 const action = btn.dataset.action;
                 const id = btn.dataset.id ? parseInt(btn.dataset.id) : null;
                 if (action === 'add-doc') {
-                    Modal.show('Add Documentation', [
-                        { name: 'name', label: 'Name', type: 'text', required: true },
-                        { name: 'url', label: 'URL', type: 'url', required: true },
+                    Modal.show(t('modal_add_doc'), [
+                        { name: 'name', label: t('field_name'), type: 'text', required: true },
+                        { name: 'url', label: t('field_url'), type: 'url', required: true },
                     ], async (data) => { data[ownerKey] = ownerId; await API.createDoc(data); this.reloadDetails(ownerKey, ownerId); });
                 } else if (action === 'del-doc') {
                     await API.deleteDoc(id); this.reloadDetails(ownerKey, ownerId);
                 } else if (action === 'add-task') {
-                    Modal.show('New Maintenance Task', [
-                        { name: 'title', label: 'Title', type: 'text', required: true },
-                        { name: 'description', label: 'Description', type: 'textarea' },
-                        { name: 'due_date', label: 'Due Date', type: 'date', required: true },
+                    Modal.show(t('modal_new_task'), [
+                        { name: 'title', label: t('field_title'), type: 'text', required: true },
+                        { name: 'description', label: t('field_description'), type: 'textarea' },
+                        { name: 'due_date', label: t('field_due_date'), type: 'date', required: true },
                     ], async (data) => { data[ownerKey] = ownerId; await API.createTask(data); this.reloadDetails(ownerKey, ownerId); });
                 } else if (action === 'complete-task') {
                     await API.updateTask(id, { status: 'completed' }); this.reloadDetails(ownerKey, ownerId);
                 } else if (action === 'del-task') {
                     await API.deleteTask(id); this.reloadDetails(ownerKey, ownerId);
                 } else if (action === 'add-plan') {
-                    Modal.show('New Maintenance Plan', [
-                        { name: 'title', label: 'Title', type: 'text', required: true },
-                        { name: 'description', label: 'Description', type: 'textarea' },
-                        { name: 'interval_days', label: 'Interval (days)', type: 'number', required: true },
-                        { name: 'next_due', label: 'First Due Date', type: 'date', required: true },
+                    Modal.show(t('modal_new_plan'), [
+                        { name: 'title', label: t('field_title'), type: 'text', required: true },
+                        { name: 'description', label: t('field_description'), type: 'textarea' },
+                        { name: 'interval_days', label: t('field_interval'), type: 'number', required: true },
+                        { name: 'next_due', label: t('field_first_due'), type: 'date', required: true },
                     ], async (data) => { data[ownerKey] = ownerId; await API.createPlan(data); this.reloadDetails(ownerKey, ownerId); });
                 } else if (action === 'complete-plan') {
                     await API.completePlan(id); this.reloadDetails(ownerKey, ownerId);

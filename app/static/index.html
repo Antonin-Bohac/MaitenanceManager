@@ -28,6 +28,9 @@
             <span class="topbar-date" id="topbar-date"></span>
         </div>
         <div class="topbar-right">
+            <button id="lang-toggle" class="topbar-btn lang-toggle" title="Language">
+                <span id="lang-label">EN</span>
+            </button>
             <button id="theme-toggle" class="topbar-btn" title="Toggle theme">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
             </button>
@@ -40,19 +43,19 @@
             <div class="sidebar-nav">
                 <button class="nav-item active" data-view="dashboard" title="Dashboard">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                    <span>Dashboard</span>
+                    <span data-i18n="nav_dashboard">Dashboard</span>
                 </button>
                 <button class="nav-item" data-view="equipment" title="Equipment">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-                    <span>Equipment</span>
+                    <span data-i18n="nav_equipment">Equipment</span>
                 </button>
                 <button class="nav-item" data-view="tasks" title="All Tasks">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-                    <span>Tasks</span>
+                    <span data-i18n="nav_tasks">Tasks</span>
                 </button>
                 <button class="nav-item" data-view="plans" title="Maintenance Plans">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    <span>Plans</span>
+                    <span data-i18n="nav_plans">Plans</span>
                 </button>
             </div>
             <div class="sidebar-footer">
@@ -67,11 +70,11 @@
             <!-- Dashboard view -->
             <div id="view-dashboard" class="view active">
                 <div class="view-header">
-                    <h2>Dashboard</h2>
+                    <h2 data-i18n="dashboard_title">Dashboard</h2>
                     <div class="view-header-actions">
                         <button class="btn btn-primary" id="btn-new-task">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            New Task
+                            <span data-i18n="btn_new_task">New Task</span>
                         </button>
                     </div>
                 </div>
@@ -82,7 +85,7 @@
                         </div>
                         <div class="stat-info">
                             <div class="stat-value" id="stat-total">-</div>
-                            <div class="stat-label">Total Tasks</div>
+                            <div class="stat-label" data-i18n="stat_total">Total Tasks</div>
                         </div>
                     </div>
                     <div class="stat-card stat-overdue">
@@ -91,7 +94,7 @@
                         </div>
                         <div class="stat-info">
                             <div class="stat-value" id="stat-overdue">-</div>
-                            <div class="stat-label">Overdue</div>
+                            <div class="stat-label" data-i18n="stat_overdue">Overdue</div>
                         </div>
                     </div>
                     <div class="stat-card stat-planned">
@@ -100,7 +103,7 @@
                         </div>
                         <div class="stat-info">
                             <div class="stat-value" id="stat-planned">-</div>
-                            <div class="stat-label">Planned</div>
+                            <div class="stat-label" data-i18n="stat_planned">Planned</div>
                         </div>
                     </div>
                     <div class="stat-card stat-completed">
@@ -109,7 +112,7 @@
                         </div>
                         <div class="stat-info">
                             <div class="stat-value" id="stat-completed">-</div>
-                            <div class="stat-label">Completed</div>
+                            <div class="stat-label" data-i18n="stat_completed">Completed</div>
                         </div>
                     </div>
                     <div class="stat-card stat-equipment">
@@ -118,7 +121,7 @@
                         </div>
                         <div class="stat-info">
                             <div class="stat-value" id="stat-equipment">-</div>
-                            <div class="stat-label">Equipment</div>
+                            <div class="stat-label" data-i18n="stat_equipment">Equipment</div>
                         </div>
                     </div>
                     <div class="stat-card stat-plans">
@@ -127,7 +130,7 @@
                         </div>
                         <div class="stat-info">
                             <div class="stat-value" id="stat-plans">-</div>
-                            <div class="stat-label">Maint. Plans</div>
+                            <div class="stat-label" data-i18n="stat_plans">Maint. Plans</div>
                         </div>
                     </div>
                 </div>
@@ -136,14 +139,14 @@
                 <div class="filter-bar">
                     <div class="filter-group">
                         <select id="filter-status" class="filter-select">
-                            <option value="">All tasks</option>
-                            <option value="overdue">Overdue</option>
-                            <option value="planned">Planned</option>
-                            <option value="completed">Completed</option>
+                            <option value="" data-i18n="filter_all_tasks">All tasks</option>
+                            <option value="overdue" data-i18n="filter_overdue">Overdue</option>
+                            <option value="planned" data-i18n="filter_planned">Planned</option>
+                            <option value="completed" data-i18n="filter_completed">Completed</option>
                         </select>
                         <div class="search-box">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                            <input type="text" id="filter-search" placeholder="Search tasks...">
+                            <input type="text" id="filter-search" placeholder="Search tasks..." data-i18n-placeholder="search_placeholder">
                         </div>
                     </div>
                     <div class="filter-group">
@@ -156,22 +159,22 @@
                     <table class="data-table" id="task-table">
                         <thead>
                             <tr>
-                                <th class="col-name">Title</th>
-                                <th class="col-factory">Plant</th>
-                                <th class="col-section">Section</th>
-                                <th class="col-equipment">Equipment</th>
-                                <th class="col-component">Component</th>
-                                <th class="col-type">Type</th>
-                                <th class="col-due">Due Date</th>
-                                <th class="col-status">Status</th>
-                                <th class="col-actions">Actions</th>
+                                <th class="col-name" data-i18n="th_title">Title</th>
+                                <th class="col-factory" data-i18n="th_plant">Plant</th>
+                                <th class="col-section" data-i18n="th_section">Section</th>
+                                <th class="col-equipment" data-i18n="th_equipment">Equipment</th>
+                                <th class="col-component" data-i18n="th_component">Component</th>
+                                <th class="col-type" data-i18n="th_type">Type</th>
+                                <th class="col-due" data-i18n="th_due_date">Due Date</th>
+                                <th class="col-status" data-i18n="th_status">Status</th>
+                                <th class="col-actions" data-i18n="th_actions">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="task-tbody"></tbody>
                     </table>
                     <div class="table-empty hidden" id="table-empty">
                         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-                        <p>No tasks to display</p>
+                        <p data-i18n="no_tasks">No tasks to display</p>
                     </div>
                 </div>
 
@@ -226,11 +229,11 @@
             <!-- Equipment view -->
             <div id="view-equipment" class="view">
                 <div class="view-header">
-                    <h2>Equipment Tree</h2>
+                    <h2 data-i18n="equipment_title">Equipment Tree</h2>
                     <div class="view-header-actions">
                         <button class="btn btn-primary" id="add-factory-btn">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            New Plant
+                            <span data-i18n="btn_new_plant">New Plant</span>
                         </button>
                     </div>
                 </div>
@@ -241,7 +244,7 @@
                     <div id="detail" class="detail-panel">
                         <div class="empty-state">
                             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-                            <p>Select an item from the tree or add a new plant.</p>
+                            <p data-i18n="equipment_empty">Select an item from the tree or add a new plant.</p>
                         </div>
                     </div>
                 </div>
@@ -250,25 +253,25 @@
             <!-- Tasks view (all tasks) -->
             <div id="view-tasks" class="view">
                 <div class="view-header">
-                    <h2>All Maintenance Tasks</h2>
+                    <h2 data-i18n="tasks_title">All Maintenance Tasks</h2>
                     <div class="view-header-actions">
                         <button class="btn btn-primary" id="btn-new-task-2">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            New Task
+                            <span data-i18n="btn_new_task">New Task</span>
                         </button>
                     </div>
                 </div>
                 <div class="filter-bar">
                     <div class="filter-group">
                         <select id="filter-status-2" class="filter-select">
-                            <option value="">All statuses</option>
-                            <option value="overdue">Overdue</option>
-                            <option value="planned">Planned</option>
-                            <option value="completed">Completed</option>
+                            <option value="" data-i18n="filter_all_statuses">All statuses</option>
+                            <option value="overdue" data-i18n="filter_overdue">Overdue</option>
+                            <option value="planned" data-i18n="filter_planned">Planned</option>
+                            <option value="completed" data-i18n="filter_completed">Completed</option>
                         </select>
                         <div class="search-box">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                            <input type="text" id="filter-search-2" placeholder="Search tasks...">
+                            <input type="text" id="filter-search-2" placeholder="Search tasks..." data-i18n-placeholder="search_placeholder">
                         </div>
                     </div>
                     <span class="result-count" id="result-count-2"></span>
@@ -277,15 +280,15 @@
                     <table class="data-table" id="task-table-2">
                         <thead>
                             <tr>
-                                <th class="col-name">Title</th>
-                                <th class="col-factory">Plant</th>
-                                <th class="col-section">Section</th>
-                                <th class="col-equipment">Equipment</th>
-                                <th class="col-component">Component</th>
-                                <th class="col-type">Type</th>
-                                <th class="col-due">Due Date</th>
-                                <th class="col-status">Status</th>
-                                <th class="col-actions">Actions</th>
+                                <th class="col-name" data-i18n="th_title">Title</th>
+                                <th class="col-factory" data-i18n="th_plant">Plant</th>
+                                <th class="col-section" data-i18n="th_section">Section</th>
+                                <th class="col-equipment" data-i18n="th_equipment">Equipment</th>
+                                <th class="col-component" data-i18n="th_component">Component</th>
+                                <th class="col-type" data-i18n="th_type">Type</th>
+                                <th class="col-due" data-i18n="th_due_date">Due Date</th>
+                                <th class="col-status" data-i18n="th_status">Status</th>
+                                <th class="col-actions" data-i18n="th_actions">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="task-tbody-2"></tbody>
@@ -296,11 +299,11 @@
             <!-- Plans view -->
             <div id="view-plans" class="view">
                 <div class="view-header">
-                    <h2>Maintenance Plans</h2>
+                    <h2 data-i18n="plans_title">Maintenance Plans</h2>
                     <div class="view-header-actions">
                         <button class="btn btn-primary" id="btn-new-plan">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            New Plan
+                            <span data-i18n="btn_new_plan">New Plan</span>
                         </button>
                     </div>
                 </div>
@@ -308,13 +311,13 @@
                     <table class="data-table" id="plan-table">
                         <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Equipment</th>
-                                <th>Component</th>
-                                <th>Interval (days)</th>
-                                <th>Last Completed</th>
-                                <th>Next Due</th>
-                                <th>Actions</th>
+                                <th data-i18n="th_title">Title</th>
+                                <th data-i18n="th_equipment">Equipment</th>
+                                <th data-i18n="th_component">Component</th>
+                                <th data-i18n="th_interval">Interval (days)</th>
+                                <th data-i18n="th_last_completed">Last Completed</th>
+                                <th data-i18n="th_next_due">Next Due</th>
+                                <th data-i18n="th_actions">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="plan-tbody"></tbody>

@@ -41,7 +41,7 @@ const Dashboard = {
 
         this.renderTable('task-tbody', this.filteredTasks);
         document.getElementById('result-count').textContent =
-            this.filteredTasks.length + ' of ' + this.data.tasks.length + ' records';
+            this.filteredTasks.length + ' ' + t('records_of') + ' ' + this.data.tasks.length + ' ' + t('records_label');
 
         const empty = document.getElementById('table-empty');
         const table = document.getElementById('task-table');
@@ -71,7 +71,7 @@ const Dashboard = {
 
         this.renderTable('task-tbody-2', filtered);
         document.getElementById('result-count-2').textContent =
-            filtered.length + ' of ' + this.data.tasks.length + ' records';
+            filtered.length + ' ' + t('records_of') + ' ' + this.data.tasks.length + ' ' + t('records_label');
     },
 
     renderTable(tbodyId, tasks) {
@@ -83,34 +83,38 @@ const Dashboard = {
             return;
         }
 
-        tbody.innerHTML = tasks.map(t => {
-            const typeLabel = t.plan_id
-                ? '<span class="task-type-badge type-plan">Plan</span>'
-                : '<span class="task-type-badge type-manual">Manual</span>';
+        tbody.innerHTML = tasks.map(task => {
+            const typeLabel = task.plan_id
+                ? `<span class="task-type-badge type-plan">${I18n.t('type_plan')}</span>`
+                : `<span class="task-type-badge type-manual">${I18n.t('type_manual')}</span>`;
 
-            const statusClass = 'status-' + t.status;
-            const statusLabels = { overdue: 'Overdue', planned: 'Planned', completed: 'Done' };
+            const statusClass = 'status-' + task.status;
+            const statusLabels = {
+                overdue: I18n.t('status_overdue'),
+                planned: I18n.t('status_planned'),
+                completed: I18n.t('status_completed')
+            };
 
-            const dueDateFormatted = t.due_date ? this.formatDate(t.due_date) : '-';
+            const dueDateFormatted = task.due_date ? this.formatDate(task.due_date) : '-';
 
             return `<tr>
-                <td class="col-name" title="${this.esc(t.title)}">${this.esc(t.title)}</td>
-                <td class="col-factory cell-muted">${this.esc(t.factory_name) || '-'}</td>
-                <td class="col-section cell-muted">${this.esc(t.section_name) || '-'}</td>
-                <td class="col-equipment">${this.esc(t.equipment_name) || '-'}</td>
-                <td class="col-component">${this.esc(t.component_name) || '-'}</td>
+                <td class="col-name" title="${this.esc(task.title)}">${this.esc(task.title)}</td>
+                <td class="col-factory cell-muted">${this.esc(task.factory_name) || '-'}</td>
+                <td class="col-section cell-muted">${this.esc(task.section_name) || '-'}</td>
+                <td class="col-equipment">${this.esc(task.equipment_name) || '-'}</td>
+                <td class="col-component">${this.esc(task.component_name) || '-'}</td>
                 <td class="col-type">${typeLabel}</td>
                 <td class="col-due cell-mono">${dueDateFormatted}</td>
                 <td class="col-status">
                     <div class="status-bar ${statusClass}">
                         <div class="status-indicator"></div>
-                        <span class="status-text">${statusLabels[t.status] || t.status}</span>
+                        <span class="status-text">${statusLabels[task.status] || task.status}</span>
                     </div>
                 </td>
                 <td class="col-actions">
                     <div class="action-btns">
-                        ${t.status !== 'completed' ? `<button class="btn-icon" data-action="complete" data-id="${t.id}" title="Complete">&#10003;</button>` : ''}
-                        <button class="btn-icon" data-action="delete" data-id="${t.id}" title="Delete" style="color:var(--danger)">&#10005;</button>
+                        ${task.status !== 'completed' ? `<button class="btn-icon" data-action="complete" data-id="${task.id}" title="Complete">&#10003;</button>` : ''}
+                        <button class="btn-icon" data-action="delete" data-id="${task.id}" title="Delete" style="color:var(--danger)">&#10005;</button>
                     </div>
                 </td>
             </tr>`;
@@ -207,7 +211,7 @@ const Dashboard = {
 
     showNewTaskModal() {
         API.getTree().then(tree => {
-            const equipOptions = [{ value: '', label: '-- None --' }];
+            const equipOptions = [{ value: '', label: t('modal_none') }];
             tree.forEach(f => {
                 f.sections.forEach(s => {
                     s.equipment_list.forEach(eq => {
@@ -216,11 +220,11 @@ const Dashboard = {
                 });
             });
 
-            Modal.show('New Maintenance Task', [
-                { name: 'title', label: 'Title', type: 'text', required: true },
-                { name: 'description', label: 'Description', type: 'textarea' },
-                { name: 'due_date', label: 'Due Date', type: 'date', required: true },
-                { name: 'equipment_id', label: 'Equipment', type: 'select', options: equipOptions },
+            Modal.show(t('modal_new_task'), [
+                { name: 'title', label: t('field_title'), type: 'text', required: true },
+                { name: 'description', label: t('field_description'), type: 'textarea' },
+                { name: 'due_date', label: t('field_due_date'), type: 'date', required: true },
+                { name: 'equipment_id', label: t('field_equipment'), type: 'select', options: equipOptions },
             ], async (data) => {
                 if (!data.equipment_id) delete data.equipment_id;
                 await API.createTask(data);
@@ -231,7 +235,7 @@ const Dashboard = {
 
     showNewPlanModal() {
         API.getTree().then(tree => {
-            const equipOptions = [{ value: '', label: '-- None --' }];
+            const equipOptions = [{ value: '', label: t('modal_none') }];
             tree.forEach(f => {
                 f.sections.forEach(s => {
                     s.equipment_list.forEach(eq => {
@@ -240,12 +244,12 @@ const Dashboard = {
                 });
             });
 
-            Modal.show('New Maintenance Plan', [
-                { name: 'title', label: 'Title', type: 'text', required: true },
-                { name: 'description', label: 'Description', type: 'textarea' },
-                { name: 'interval_days', label: 'Interval (days)', type: 'number', required: true },
-                { name: 'next_due', label: 'First Due Date', type: 'date', required: true },
-                { name: 'equipment_id', label: 'Equipment', type: 'select', options: equipOptions },
+            Modal.show(t('modal_new_plan'), [
+                { name: 'title', label: t('field_title'), type: 'text', required: true },
+                { name: 'description', label: t('field_description'), type: 'textarea' },
+                { name: 'interval_days', label: t('field_interval'), type: 'number', required: true },
+                { name: 'next_due', label: t('field_first_due'), type: 'date', required: true },
+                { name: 'equipment_id', label: t('field_equipment'), type: 'select', options: equipOptions },
             ], async (data) => {
                 if (!data.equipment_id) delete data.equipment_id;
                 await API.createPlan(data);
@@ -258,7 +262,7 @@ const Dashboard = {
     formatDate(dateStr) {
         if (!dateStr) return '-';
         const d = new Date(dateStr + 'T00:00:00');
-        return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+        return d.toLocaleDateString(I18n.getDateLocale(), { month: 'short', day: '2-digit', year: 'numeric' });
     },
 
     esc(str) {

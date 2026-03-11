@@ -18,13 +18,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function applyTheme(theme) {
         document.documentElement.dataset.theme = theme;
-        themeToggle.title = theme === 'dark' ? 'Light theme' : 'Dark theme';
+        themeToggle.title = theme === 'dark' ? t('theme_light') : t('theme_dark');
+    }
+
+    // Language toggle
+    const langToggle = document.getElementById('lang-toggle');
+    const langLabel = document.getElementById('lang-label');
+    langLabel.textContent = I18n.currentLang.toUpperCase();
+
+    langToggle.addEventListener('click', async () => {
+        const next = I18n.currentLang === 'en' ? 'de' : 'en';
+        I18n.setLang(next);
+        langLabel.textContent = next.toUpperCase();
+        applyStaticTranslations();
+        await TranslationCache.loadAll(next);
+        switchView(getCurrentView());
+    });
+
+    function applyStaticTranslations() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            el.textContent = t(el.dataset.i18n);
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            el.placeholder = t(el.dataset.i18nPlaceholder);
+        });
+    }
+
+    function getCurrentView() {
+        const active = document.querySelector('.nav-item.active');
+        return active ? active.dataset.view : 'dashboard';
     }
 
     // Date in topbar
     const dateEl = document.getElementById('topbar-date');
     const now = new Date();
-    dateEl.textContent = now.toLocaleDateString('en-US', {
+    dateEl.textContent = now.toLocaleDateString(I18n.getDateLocale(), {
         weekday: 'long', month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
     });
 
@@ -68,9 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add factory button
     document.getElementById('add-factory-btn').addEventListener('click', () => {
-        Modal.show('New Plant', [
-            { name: 'name', label: 'Name', type: 'text', required: true },
-            { name: 'description', label: 'Description', type: 'textarea' },
+        Modal.show(t('btn_new_plant'), [
+            { name: 'name', label: t('field_name'), type: 'text', required: true },
+            { name: 'description', label: t('field_description'), type: 'textarea' },
         ], async (data) => {
             await API.createFactory(data);
             Tree.refresh();
@@ -100,5 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Initial load
-    switchView('dashboard');
+    TranslationCache.loadAll(I18n.currentLang).then(() => {
+        applyStaticTranslations();
+        switchView('dashboard');
+    });
 });
