@@ -97,10 +97,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add factory button
     document.getElementById('add-factory-btn').addEventListener('click', () => {
         Modal.show(t('btn_new_plant'), [
-            { name: 'name', label: t('field_name'), type: 'text', required: true },
+            { name: 'name_en', label: t('field_name_en'), type: 'text', required: true },
+            { name: 'name_de', label: t('field_name_de'), type: 'text' },
             { name: 'description', label: t('field_description'), type: 'textarea' },
         ], async (data) => {
-            await API.createFactory(data);
+            const created = await API.createFactory({ name: data.name_en || data.name_de, description: data.description });
+            if (data.name_en) await API.upsertTranslation({ entity_type: 'factory', entity_id: created.id, field_name: 'name', lang: 'en', value: data.name_en });
+            if (data.name_de) await API.upsertTranslation({ entity_type: 'factory', entity_id: created.id, field_name: 'name', lang: 'de', value: data.name_de });
             Tree.refresh();
         });
     });

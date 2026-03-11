@@ -221,13 +221,21 @@ const Dashboard = {
             });
 
             Modal.show(t('modal_new_task'), [
-                { name: 'title', label: t('field_title'), type: 'text', required: true },
+                { name: 'title_en', label: t('field_title_en'), type: 'text', required: true },
+                { name: 'title_de', label: t('field_title_de'), type: 'text' },
                 { name: 'description', label: t('field_description'), type: 'textarea' },
                 { name: 'due_date', label: t('field_due_date'), type: 'date', required: true },
                 { name: 'equipment_id', label: t('field_equipment'), type: 'select', options: equipOptions },
             ], async (data) => {
-                if (!data.equipment_id) delete data.equipment_id;
-                await API.createTask(data);
+                const payload = {
+                    title: data.title_en || data.title_de,
+                    description: data.description,
+                    due_date: data.due_date,
+                };
+                if (data.equipment_id) payload.equipment_id = parseInt(data.equipment_id);
+                const created = await API.createTask(payload);
+                if (data.title_en) await API.upsertTranslation({ entity_type: 'task', entity_id: created.id, field_name: 'title', lang: 'en', value: data.title_en });
+                if (data.title_de) await API.upsertTranslation({ entity_type: 'task', entity_id: created.id, field_name: 'title', lang: 'de', value: data.title_de });
                 this.load();
             });
         });
@@ -245,14 +253,23 @@ const Dashboard = {
             });
 
             Modal.show(t('modal_new_plan'), [
-                { name: 'title', label: t('field_title'), type: 'text', required: true },
+                { name: 'title_en', label: t('field_title_en'), type: 'text', required: true },
+                { name: 'title_de', label: t('field_title_de'), type: 'text' },
                 { name: 'description', label: t('field_description'), type: 'textarea' },
                 { name: 'interval_days', label: t('field_interval'), type: 'number', required: true },
                 { name: 'next_due', label: t('field_first_due'), type: 'date', required: true },
                 { name: 'equipment_id', label: t('field_equipment'), type: 'select', options: equipOptions },
             ], async (data) => {
-                if (!data.equipment_id) delete data.equipment_id;
-                await API.createPlan(data);
+                const payload = {
+                    title: data.title_en || data.title_de,
+                    description: data.description,
+                    interval_days: parseInt(data.interval_days),
+                    next_due: data.next_due,
+                };
+                if (data.equipment_id) payload.equipment_id = parseInt(data.equipment_id);
+                const created = await API.createPlan(payload);
+                if (data.title_en) await API.upsertTranslation({ entity_type: 'plan', entity_id: created.id, field_name: 'title', lang: 'en', value: data.title_en });
+                if (data.title_de) await API.upsertTranslation({ entity_type: 'plan', entity_id: created.id, field_name: 'title', lang: 'de', value: data.title_de });
                 this.loadPlans();
                 this.load();
             });

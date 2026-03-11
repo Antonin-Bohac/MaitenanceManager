@@ -127,45 +127,90 @@ const Tree = {
 
     addSection(factoryId) {
         Modal.show(t('modal_new_section'), [
-            { name: 'name', label: t('field_name'), type: 'text', required: true },
+            { name: 'name_en', label: t('field_name_en'), type: 'text', required: true },
+            { name: 'name_de', label: t('field_name_de'), type: 'text' },
             { name: 'description', label: t('field_description'), type: 'textarea' },
-        ], async (data) => { data.factory_id = factoryId; await API.createSection(data); this.refresh(); });
+        ], async (data) => {
+            const payload = { name: data.name_en || data.name_de, description: data.description, factory_id: factoryId };
+            const created = await API.createSection(payload);
+            if (data.name_en) await API.upsertTranslation({ entity_type: 'section', entity_id: created.id, field_name: 'name', lang: 'en', value: data.name_en });
+            if (data.name_de) await API.upsertTranslation({ entity_type: 'section', entity_id: created.id, field_name: 'name', lang: 'de', value: data.name_de });
+            this.refresh();
+        });
     },
     addEquipment(sectionId) {
         Modal.show(t('modal_new_equipment'), [
-            { name: 'name', label: t('field_name'), type: 'text', required: true },
+            { name: 'name_en', label: t('field_name_en'), type: 'text', required: true },
+            { name: 'name_de', label: t('field_name_de'), type: 'text' },
             { name: 'description', label: t('field_description'), type: 'textarea' },
-        ], async (data) => { data.section_id = sectionId; await API.createEquipment(data); this.refresh(); });
+        ], async (data) => {
+            const payload = { name: data.name_en || data.name_de, description: data.description, section_id: sectionId };
+            const created = await API.createEquipment(payload);
+            if (data.name_en) await API.upsertTranslation({ entity_type: 'equipment', entity_id: created.id, field_name: 'name', lang: 'en', value: data.name_en });
+            if (data.name_de) await API.upsertTranslation({ entity_type: 'equipment', entity_id: created.id, field_name: 'name', lang: 'de', value: data.name_de });
+            this.refresh();
+        });
     },
     addComponent(equipmentId) {
         Modal.show(t('modal_new_component'), [
-            { name: 'name', label: t('field_name'), type: 'text', required: true },
+            { name: 'name_en', label: t('field_name_en'), type: 'text', required: true },
+            { name: 'name_de', label: t('field_name_de'), type: 'text' },
             { name: 'description', label: t('field_description'), type: 'textarea' },
-        ], async (data) => { data.equipment_id = equipmentId; await API.createComponent(data); this.refresh(); });
+        ], async (data) => {
+            const payload = { name: data.name_en || data.name_de, description: data.description, equipment_id: equipmentId };
+            const created = await API.createComponent(payload);
+            if (data.name_en) await API.upsertTranslation({ entity_type: 'component', entity_id: created.id, field_name: 'name', lang: 'en', value: data.name_en });
+            if (data.name_de) await API.upsertTranslation({ entity_type: 'component', entity_id: created.id, field_name: 'name', lang: 'de', value: data.name_de });
+            this.refresh();
+        });
     },
     editFactory(f) {
         Modal.show(t('modal_edit_plant'), [
-            { name: 'name', label: t('field_name'), type: 'text', required: true, value: f.name },
+            { name: 'name_en', label: t('field_name_en'), type: 'text', required: true, value: f.name },
+            { name: 'name_de', label: t('field_name_de'), type: 'text' },
             { name: 'description', label: t('field_description'), type: 'textarea', value: f.description || '' },
-        ], async (data) => { await API.updateFactory(f.id, data); this.refresh(); });
+        ], async (data) => {
+            await API.updateFactory(f.id, { name: data.name_en || data.name_de, description: data.description });
+            if (data.name_en) await API.upsertTranslation({ entity_type: 'factory', entity_id: f.id, field_name: 'name', lang: 'en', value: data.name_en });
+            if (data.name_de) await API.upsertTranslation({ entity_type: 'factory', entity_id: f.id, field_name: 'name', lang: 'de', value: data.name_de });
+            this.refresh();
+        });
     },
     editSection(s) {
         Modal.show(t('modal_edit_section'), [
-            { name: 'name', label: t('field_name'), type: 'text', required: true, value: s.name },
+            { name: 'name_en', label: t('field_name_en'), type: 'text', required: true, value: s.name },
+            { name: 'name_de', label: t('field_name_de'), type: 'text' },
             { name: 'description', label: t('field_description'), type: 'textarea', value: s.description || '' },
-        ], async (data) => { await API.updateSection(s.id, data); this.refresh(); });
+        ], async (data) => {
+            await API.updateSection(s.id, { name: data.name_en || data.name_de, description: data.description });
+            if (data.name_en) await API.upsertTranslation({ entity_type: 'section', entity_id: s.id, field_name: 'name', lang: 'en', value: data.name_en });
+            if (data.name_de) await API.upsertTranslation({ entity_type: 'section', entity_id: s.id, field_name: 'name', lang: 'de', value: data.name_de });
+            this.refresh();
+        });
     },
     editEquipment(e) {
         Modal.show(t('modal_edit_equipment'), [
-            { name: 'name', label: t('field_name'), type: 'text', required: true, value: e.name },
+            { name: 'name_en', label: t('field_name_en'), type: 'text', required: true, value: e.name },
+            { name: 'name_de', label: t('field_name_de'), type: 'text' },
             { name: 'description', label: t('field_description'), type: 'textarea', value: e.description || '' },
-        ], async (data) => { await API.updateEquipment(e.id, data); this.refresh(); });
+        ], async (data) => {
+            await API.updateEquipment(e.id, { name: data.name_en || data.name_de, description: data.description });
+            if (data.name_en) await API.upsertTranslation({ entity_type: 'equipment', entity_id: e.id, field_name: 'name', lang: 'en', value: data.name_en });
+            if (data.name_de) await API.upsertTranslation({ entity_type: 'equipment', entity_id: e.id, field_name: 'name', lang: 'de', value: data.name_de });
+            this.refresh();
+        });
     },
     editComponent(c) {
         Modal.show(t('modal_edit_component'), [
-            { name: 'name', label: t('field_name'), type: 'text', required: true, value: c.name },
+            { name: 'name_en', label: t('field_name_en'), type: 'text', required: true, value: c.name },
+            { name: 'name_de', label: t('field_name_de'), type: 'text' },
             { name: 'description', label: t('field_description'), type: 'textarea', value: c.description || '' },
-        ], async (data) => { await API.updateComponent(c.id, data); this.refresh(); });
+        ], async (data) => {
+            await API.updateComponent(c.id, { name: data.name_en || data.name_de, description: data.description });
+            if (data.name_en) await API.upsertTranslation({ entity_type: 'component', entity_id: c.id, field_name: 'name', lang: 'en', value: data.name_en });
+            if (data.name_de) await API.upsertTranslation({ entity_type: 'component', entity_id: c.id, field_name: 'name', lang: 'de', value: data.name_de });
+            this.refresh();
+        });
     },
     deleteFactory(f) {
         Modal.confirm(t('confirm_delete_plant', { name: f.name }), async () => { await API.deleteFactory(f.id); this.refresh(); Detail.clear(); });
