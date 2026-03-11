@@ -151,9 +151,11 @@ const I18n = {
 <h4>Data storage</h4>
 <p>All data and uploaded documents are stored in the Docker volume <code>maintenance-manager-data</code>. The database resets to demo data if you remove the volume.</p>
 <h4>Uninstalling</h4>
-<p>To completely remove the application, run the installer with the uninstall flag:</p>
-<pre>curl -sL https://raw.githubusercontent.com/Antonin-Bohac/MaitenanceManager/master/install.sh | bash -s -- --uninstall</pre>
-<p>On Windows PowerShell: <code>.\\install.ps1 -Uninstall</code></p>`,
+<p>To completely remove the application from your computer, run these three commands in your terminal:</p>
+<pre>docker rm -f maintenance-manager
+docker rmi maintenance-manager
+docker volume rm maintenance-manager-data</pre>
+<p>This removes the container, image, and all data. Nothing is stored outside of Docker.</p>`,
             welcome_button: 'Understood',
         },
 
@@ -306,9 +308,11 @@ const I18n = {
 <h4>Datenspeicherung</h4>
 <p>Alle Daten und hochgeladenen Dokumente werden im Docker-Volume <code>maintenance-manager-data</code> gespeichert. Die Datenbank wird auf Demodaten zurückgesetzt, wenn Sie das Volume entfernen.</p>
 <h4>Deinstallation</h4>
-<p>Um die Anwendung vollständig zu entfernen, führen Sie den Installer mit dem Uninstall-Flag aus:</p>
-<pre>curl -sL https://raw.githubusercontent.com/Antonin-Bohac/MaitenanceManager/master/install.sh | bash -s -- --uninstall</pre>
-<p>Unter Windows PowerShell: <code>.\\install.ps1 -Uninstall</code></p>`,
+<p>Um die Anwendung vollständig von Ihrem Computer zu entfernen, führen Sie diese drei Befehle im Terminal aus:</p>
+<pre>docker rm -f maintenance-manager
+docker rmi maintenance-manager
+docker volume rm maintenance-manager-data</pre>
+<p>Damit werden Container, Image und alle Daten entfernt. Außerhalb von Docker wird nichts gespeichert.</p>`,
             welcome_button: 'Verstanden',
         },
     },
