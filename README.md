@@ -5,43 +5,59 @@ Web application for managing maintenance of factory equipment. Built with FastAP
 ## Features
 
 - Hierarchical tree view: Factory > Section > Equipment > Component
-- Maintenance record management (CRUD)
-- Documentation attachments
+- Maintenance task management with checklist, activity log, and priority tracking
+- Maintenance plans with recurring schedules
+- Bilingual interface (English / German) with database record translations
+- Enhanced task detail pane with breadcrumb navigation
+- Documentation attachments and file uploads
 - Dark / light theme toggle
-- Dashboard overview
+- Dashboard overview with filtering
 - SQLite database (zero configuration)
 
-## Quick Start (Docker)
+## Installation
 
-### Prerequisites
+The only prerequisite is [Docker](https://docs.docker.com/get-docker/). The installer handles everything else automatically.
 
-- [Docker](https://docs.docker.com/get-docker/) installed
-
-### Build and run
+### Linux / macOS / WSL
 
 ```bash
-git clone https://github.com/Antonin-Bohac/MaitenanceManager.git
-cd MaitenanceManager
-
-docker build -t maintenance-manager .
-docker run -d -p 8000:8000 -v mm-data:/app/data --name maintenance-manager maintenance-manager
+curl -sL https://raw.githubusercontent.com/Antonin-Bohac/MaitenanceManager/master/install.sh | bash
 ```
 
-Open **http://localhost:8000** in your browser.
+### Windows (PowerShell)
 
-### Stop / restart
-
-```bash
-docker stop maintenance-manager
-docker start maintenance-manager
+```powershell
+irm https://raw.githubusercontent.com/Antonin-Bohac/MaitenanceManager/master/install.ps1 | iex
 ```
 
-### Remove
+The installer will:
+1. Check that Docker is installed and running
+2. Find an available port (starting from 8000)
+3. Build the application image
+4. Start the container with demo data
+5. Display the URL to access the app
+
+### Managing the application
 
 ```bash
-docker rm -f maintenance-manager
-# To also remove persisted data:
-docker volume rm mm-data
+docker stop maintenance-manager      # Stop
+docker start maintenance-manager     # Start
+docker restart maintenance-manager   # Restart
+docker logs -f maintenance-manager   # View logs
+```
+
+### Uninstalling
+
+Removes the container, image, and all application data.
+
+**Linux / macOS / WSL:**
+```bash
+curl -sL https://raw.githubusercontent.com/Antonin-Bohac/MaitenanceManager/master/install.sh | bash -s -- --uninstall
+```
+
+**Windows (PowerShell):**
+```powershell
+.\install.ps1 -Uninstall
 ```
 
 ## Development (without Docker)
@@ -71,8 +87,12 @@ app/
   database.py      # SQLAlchemy engine & session
   models.py        # ORM models
   schemas.py       # Pydantic schemas
+  migrate.py       # Database migration script
   routers/         # API route handlers
   static/          # Frontend (HTML, CSS, JS)
+seed/              # Demo database for fresh installs
+install.sh         # Docker installer (Linux/macOS)
+install.ps1        # Docker installer (Windows)
 Dockerfile         # Container image definition
 requirements.txt   # Python dependencies
 tests/             # Pytest test suite
