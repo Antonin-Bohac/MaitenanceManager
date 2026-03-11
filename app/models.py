@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from sqlalchemy import Column, Integer, String, Text, Date, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from app.database import Base
@@ -9,7 +9,7 @@ class Factory(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(200), nullable=False)
     description = Column(Text, default="")
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     sections = relationship("Section", back_populates="factory", cascade="all, delete-orphan")
 
 
@@ -19,7 +19,7 @@ class Section(Base):
     name = Column(String(200), nullable=False)
     description = Column(Text, default="")
     factory_id = Column(Integer, ForeignKey("factories.id", ondelete="CASCADE"), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     factory = relationship("Factory", back_populates="sections")
     equipment_list = relationship("Equipment", back_populates="section", cascade="all, delete-orphan")
 
@@ -30,7 +30,7 @@ class Equipment(Base):
     name = Column(String(200), nullable=False)
     description = Column(Text, default="")
     section_id = Column(Integer, ForeignKey("sections.id", ondelete="CASCADE"), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     section = relationship("Section", back_populates="equipment_list")
     components = relationship("Component", back_populates="equipment", cascade="all, delete-orphan")
     documentation = relationship("Documentation", back_populates="equipment", cascade="all, delete-orphan")
@@ -44,7 +44,7 @@ class Component(Base):
     name = Column(String(200), nullable=False)
     description = Column(Text, default="")
     equipment_id = Column(Integer, ForeignKey("equipment.id", ondelete="CASCADE"), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     equipment = relationship("Equipment", back_populates="components")
     documentation = relationship("Documentation", back_populates="component", cascade="all, delete-orphan")
     maintenance_tasks = relationship("MaintenanceTask", back_populates="component", cascade="all, delete-orphan")
@@ -60,7 +60,7 @@ class Documentation(Base):
     equipment_id = Column(Integer, ForeignKey("equipment.id", ondelete="CASCADE"), nullable=True)
     component_id = Column(Integer, ForeignKey("components.id", ondelete="CASCADE"), nullable=True)
     task_id = Column(Integer, ForeignKey("maintenance_tasks.id", ondelete="CASCADE"), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     equipment = relationship("Equipment", back_populates="documentation")
     component = relationship("Component", back_populates="documentation")
     task = relationship("MaintenanceTask", back_populates="documentation")
@@ -80,7 +80,7 @@ class MaintenanceTask(Base):
     equipment_id = Column(Integer, ForeignKey("equipment.id", ondelete="CASCADE"), nullable=True)
     component_id = Column(Integer, ForeignKey("components.id", ondelete="CASCADE"), nullable=True)
     plan_id = Column(Integer, ForeignKey("maintenance_plans.id", ondelete="SET NULL"), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     completed_at = Column(DateTime, nullable=True)
     equipment = relationship("Equipment", back_populates="maintenance_tasks")
     component = relationship("Component", back_populates="maintenance_tasks")
@@ -100,7 +100,7 @@ class MaintenancePlan(Base):
     next_due = Column(Date, nullable=False)
     equipment_id = Column(Integer, ForeignKey("equipment.id", ondelete="CASCADE"), nullable=True)
     component_id = Column(Integer, ForeignKey("components.id", ondelete="CASCADE"), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     equipment = relationship("Equipment", back_populates="maintenance_plans")
     component = relationship("Component", back_populates="maintenance_plans")
     tasks = relationship("MaintenanceTask", back_populates="plan")
@@ -114,7 +114,7 @@ class Translation(Base):
     field_name = Column(String(50), nullable=False)
     lang = Column(String(10), nullable=False)
     value = Column(Text, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     __table_args__ = (
         UniqueConstraint("entity_type", "entity_id", "field_name", "lang", name="uq_translation"),
@@ -127,7 +127,7 @@ class TaskChecklistItem(Base):
     task_id = Column(Integer, ForeignKey("maintenance_tasks.id", ondelete="CASCADE"), nullable=False)
     text = Column(String(500), nullable=False)
     is_completed = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     task = relationship("MaintenanceTask", back_populates="checklist_items")
 
 
@@ -137,5 +137,5 @@ class TaskActivityLog(Base):
     task_id = Column(Integer, ForeignKey("maintenance_tasks.id", ondelete="CASCADE"), nullable=False)
     action = Column(String(50), nullable=False)
     detail = Column(Text, default="")
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     task = relationship("MaintenanceTask", back_populates="activity_log")

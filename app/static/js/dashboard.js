@@ -92,7 +92,8 @@ const Dashboard = {
             const statusLabels = {
                 overdue: I18n.t('status_overdue'),
                 planned: I18n.t('status_planned'),
-                completed: I18n.t('status_completed')
+                completed: I18n.t('status_completed'),
+                in_progress: I18n.t('status_in_progress'),
             };
 
             const dueDateFormatted = task.due_date ? this.formatDate(task.due_date) : '-';

@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from typing import Literal
 from pydantic import BaseModel
 
 
@@ -106,7 +107,7 @@ class MaintenanceTaskCreate(BaseModel):
     title: str
     description: str = ""
     due_date: date
-    priority: str = "medium"
+    priority: Literal["low", "medium", "high", "critical"] = "medium"
     assignee: str | None = None
     estimated_minutes: int | None = None
     equipment_id: int | None = None
@@ -116,9 +117,9 @@ class MaintenanceTaskUpdate(BaseModel):
     title: str | None = None
     description: str | None = None
     due_date: date | None = None
-    status: str | None = None
+    status: Literal["planned", "in_progress", "completed", "overdue"] | None = None
     notes: str | None = None
-    priority: str | None = None
+    priority: Literal["low", "medium", "high", "critical"] | None = None
     assignee: str | None = None
     estimated_minutes: int | None = None
 
@@ -194,10 +195,10 @@ class TreeFactory(BaseModel):
 
 # --- Translation ---
 class TranslationUpsert(BaseModel):
-    entity_type: str
+    entity_type: Literal["factory", "section", "equipment", "component", "task", "plan"]
     entity_id: int
-    field_name: str
-    lang: str
+    field_name: Literal["name", "description", "title"]
+    lang: Literal["en", "de"]
     value: str
 
 class TranslationOut(BaseModel):

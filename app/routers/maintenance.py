@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, joinedload
 from app.database import get_db
@@ -58,7 +58,7 @@ def update_task(task_id: int, data: MaintenanceTaskUpdate, db: Session = Depends
                     db.add(TaskActivityLog(task_id=task_id, action=f"{field}_changed", detail=f"{old_val} → {new_val}"))
 
     if update.get("status") == "completed" and task.status != "completed":
-        update["completed_at"] = datetime.utcnow()
+        update["completed_at"] = datetime.now(timezone.utc)
     for key, val in update.items():
         setattr(task, key, val)
     db.commit()
