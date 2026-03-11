@@ -50,8 +50,8 @@ spinner() {
     while kill -0 "$pid" 2>/dev/null; do
         local c="${chars:i%${#chars}:1}"
         printf "\r  ${CYAN}%s${RESET} %s" "$c" "$msg"
-        ((i++))
-        sleep 0.1
+        i=$(( i + 1 ))
+        sleep 0.1 || true
     done
 
     # Show cursor, clear line
@@ -317,10 +317,10 @@ ENTRYPOINT
 
     # Build with spinner
     local build_log="$TEMP_DIR/build.log"
-    docker build -t "$IMAGE_NAME" "$TEMP_DIR" > "$build_log" 2>&1 &
+    docker build --no-cache -t "$IMAGE_NAME" "$TEMP_DIR" > "$build_log" 2>&1 &
     local build_pid=$!
 
-    spinner "$build_pid" "Building image (this may take a minute)..."
+    spinner "$build_pid" "Building image (this may take a minute)..." || true
 
     if wait "$build_pid"; then
         check "Image built successfully"

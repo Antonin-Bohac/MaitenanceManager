@@ -255,7 +255,7 @@ if ($existing) {
     docker rm $ContainerName 2>$null | Out-Null
 }
 
-$buildArgs = @("build", "-t", $ImageName, $tempDir)
+$buildArgs = @("build", "--no-cache", "-t", $ImageName, $tempDir)
 $buildProc = Start-Process -FilePath "docker" -ArgumentList $buildArgs -NoNewWindow -Wait -PassThru -RedirectStandardOutput (Join-Path $tempDir "build.log") -RedirectStandardError (Join-Path $tempDir "build.err")
 
 # Clean up temp dir
