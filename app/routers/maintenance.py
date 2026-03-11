@@ -204,6 +204,9 @@ def dashboard_data(db: Session = Depends(get_db)):
             "plan_id": t.plan_id,
             "created_at": t.created_at.isoformat() if t.created_at else None,
             "completed_at": t.completed_at.isoformat() if t.completed_at else None,
+            "priority": t.priority or "medium",
+            "assignee": t.assignee or "",
+            "estimated_minutes": t.estimated_minutes,
         })
 
     # Stats
