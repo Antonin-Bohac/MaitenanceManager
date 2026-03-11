@@ -135,6 +135,26 @@ const I18n = {
             error_prefix: 'Error: ',
             loading: 'Loading...',
             version: 'v1.0',
+            welcome_title: 'Welcome to Maintenance Manager',
+            welcome_body: `<p>This application is a <strong>proof of concept</strong> and is not intended for production use. It is provided for demonstration and testing purposes only.</p>
+<h4>What you can do</h4>
+<ul>
+<li><strong>Equipment Tree</strong> — Create and manage a hierarchy of Factories, Sections, Equipment, and Components</li>
+<li><strong>Maintenance Tasks</strong> — Create tasks with due dates, priorities, assignees, checklists, and notes</li>
+<li><strong>Maintenance Plans</strong> — Set up recurring maintenance schedules that auto-generate tasks</li>
+<li><strong>Dashboard</strong> — Overview of all tasks with filtering by status and search</li>
+<li><strong>File Attachments</strong> — Upload documents to tasks (stored inside the Docker volume)</li>
+<li><strong>Bilingual UI</strong> — Switch between English and German using the language toggle in the top bar</li>
+</ul>
+<h4>How to use</h4>
+<p>Start by exploring the <strong>Equipment</strong> tab to see the demo hierarchy, or go to the <strong>Dashboard</strong> to browse existing tasks. Click any task row to open the detail pane with full controls.</p>
+<h4>Data storage</h4>
+<p>All data and uploaded documents are stored in the Docker volume <code>maintenance-manager-data</code>. The database resets to demo data if you remove the volume.</p>
+<h4>Uninstalling</h4>
+<p>To completely remove the application, run the installer with the uninstall flag:</p>
+<pre>curl -sL https://raw.githubusercontent.com/Antonin-Bohac/MaitenanceManager/master/install.sh | bash -s -- --uninstall</pre>
+<p>On Windows PowerShell: <code>.\\install.ps1 -Uninstall</code></p>`,
+            welcome_button: 'Understood',
         },
 
         de: {
@@ -270,6 +290,26 @@ const I18n = {
             error_prefix: 'Fehler: ',
             loading: 'Laden...',
             version: 'v1.0',
+            welcome_title: 'Willkommen beim Maintenance Manager',
+            welcome_body: `<p>Diese Anwendung ist ein <strong>Proof of Concept</strong> und nicht für den produktiven Einsatz vorgesehen. Sie dient ausschließlich zu Demonstrations- und Testzwecken.</p>
+<h4>Funktionen</h4>
+<ul>
+<li><strong>Anlagenbaum</strong> — Erstellen und verwalten Sie eine Hierarchie aus Werken, Bereichen, Anlagen und Komponenten</li>
+<li><strong>Wartungsaufgaben</strong> — Aufgaben mit Fälligkeitsdatum, Prioritäten, Zuständigen, Checklisten und Notizen erstellen</li>
+<li><strong>Wartungspläne</strong> — Wiederkehrende Wartungsintervalle einrichten, die automatisch Aufgaben generieren</li>
+<li><strong>Dashboard</strong> — Übersicht aller Aufgaben mit Filter nach Status und Suche</li>
+<li><strong>Dateianhänge</strong> — Dokumente an Aufgaben anhängen (gespeichert im Docker-Volume)</li>
+<li><strong>Zweisprachige Oberfläche</strong> — Wechseln Sie zwischen Englisch und Deutsch über den Sprachumschalter in der oberen Leiste</li>
+</ul>
+<h4>Bedienung</h4>
+<p>Beginnen Sie mit dem <strong>Ausrüstung</strong>-Tab, um die Demo-Hierarchie zu erkunden, oder öffnen Sie das <strong>Dashboard</strong>, um bestehende Aufgaben zu durchsuchen. Klicken Sie auf eine Aufgabenzeile, um das Detailfenster mit allen Steuerelementen zu öffnen.</p>
+<h4>Datenspeicherung</h4>
+<p>Alle Daten und hochgeladenen Dokumente werden im Docker-Volume <code>maintenance-manager-data</code> gespeichert. Die Datenbank wird auf Demodaten zurückgesetzt, wenn Sie das Volume entfernen.</p>
+<h4>Deinstallation</h4>
+<p>Um die Anwendung vollständig zu entfernen, führen Sie den Installer mit dem Uninstall-Flag aus:</p>
+<pre>curl -sL https://raw.githubusercontent.com/Antonin-Bohac/MaitenanceManager/master/install.sh | bash -s -- --uninstall</pre>
+<p>Unter Windows PowerShell: <code>.\\install.ps1 -Uninstall</code></p>`,
+            welcome_button: 'Verstanden',
         },
     },
 

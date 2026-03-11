@@ -890,6 +890,50 @@ body {
     margin-top: 20px;
 }
 
+/* === WELCOME MODAL === */
+.welcome-modal {
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+.welcome-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+.welcome-body h4 {
+    margin: 16px 0 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-bright);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.welcome-body ul {
+    margin: 0;
+    padding-left: 20px;
+}
+.welcome-body li {
+    margin-bottom: 4px;
+}
+.welcome-body code {
+    background: var(--bg-input);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.welcome-body pre {
+    background: var(--bg-input);
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    font-size: 11px;
+    overflow-x: auto;
+    margin: 8px 0;
+}
+.welcome-body p {
+    margin: 8px 0;
+}
+
 /* === SCROLLBAR === */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

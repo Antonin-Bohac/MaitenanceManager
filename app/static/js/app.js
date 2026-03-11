@@ -130,9 +130,28 @@ document.addEventListener('DOMContentLoaded', () => {
         item.addEventListener('click', closeSidebar);
     });
 
+    // Welcome modal (first visit only)
+    function showWelcomeModal() {
+        if (localStorage.getItem('welcome_seen')) return;
+        const overlay = document.getElementById('modal-overlay');
+        overlay.innerHTML = `<div class="modal welcome-modal">
+            <h3>${t('welcome_title')}</h3>
+            <div class="welcome-body">${t('welcome_body')}</div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" id="welcome-dismiss">${t('welcome_button')}</button>
+            </div>
+        </div>`;
+        overlay.classList.remove('hidden');
+        document.getElementById('welcome-dismiss').addEventListener('click', () => {
+            localStorage.setItem('welcome_seen', '1');
+            Modal.hide();
+        });
+    }
+
     // Initial load
     TranslationCache.loadAll(I18n.currentLang).then(() => {
         applyStaticTranslations();
         switchView('dashboard');
+        showWelcomeModal();
     });
 });
