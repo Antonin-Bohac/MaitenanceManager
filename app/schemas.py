@@ -106,6 +106,9 @@ class MaintenanceTaskCreate(BaseModel):
     title: str
     description: str = ""
     due_date: date
+    priority: str = "medium"
+    assignee: str | None = None
+    estimated_minutes: int | None = None
     equipment_id: int | None = None
     component_id: int | None = None
 
@@ -115,6 +118,9 @@ class MaintenanceTaskUpdate(BaseModel):
     due_date: date | None = None
     status: str | None = None
     notes: str | None = None
+    priority: str | None = None
+    assignee: str | None = None
+    estimated_minutes: int | None = None
 
 class MaintenanceTaskOut(BaseModel):
     id: int
@@ -123,6 +129,9 @@ class MaintenanceTaskOut(BaseModel):
     due_date: date
     status: str
     notes: str
+    priority: str
+    assignee: str | None
+    estimated_minutes: int | None
     equipment_id: int | None
     component_id: int | None
     plan_id: int | None
@@ -180,4 +189,49 @@ class TreeFactory(BaseModel):
     id: int
     name: str
     sections: list[TreeSection] = []
+    model_config = {"from_attributes": True}
+
+
+# --- Translation ---
+class TranslationUpsert(BaseModel):
+    entity_type: str
+    entity_id: int
+    field_name: str
+    lang: str
+    value: str
+
+class TranslationOut(BaseModel):
+    id: int
+    entity_type: str
+    entity_id: int
+    field_name: str
+    lang: str
+    value: str
+    model_config = {"from_attributes": True}
+
+
+# --- TaskChecklistItem ---
+class ChecklistItemCreate(BaseModel):
+    text: str
+
+class ChecklistItemUpdate(BaseModel):
+    text: str | None = None
+    is_completed: bool | None = None
+
+class ChecklistItemOut(BaseModel):
+    id: int
+    task_id: int
+    text: str
+    is_completed: bool
+    created_at: datetime
+    model_config = {"from_attributes": True}
+
+
+# --- TaskActivityLog ---
+class ActivityLogOut(BaseModel):
+    id: int
+    task_id: int
+    action: str
+    detail: str
+    created_at: datetime
     model_config = {"from_attributes": True}

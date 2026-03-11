@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from sqlalchemy import Column, Integer, String, Text, Date, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, Date, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -74,6 +74,9 @@ class MaintenanceTask(Base):
     due_date = Column(Date, nullable=False)
     status = Column(String(20), default="planned")
     notes = Column(Text, default="")
+    priority = Column(String(20), default="medium")
+    assignee = Column(String(200), nullable=True)
+    estimated_minutes = Column(Integer, nullable=True)
     equipment_id = Column(Integer, ForeignKey("equipment.id", ondelete="CASCADE"), nullable=True)
     component_id = Column(Integer, ForeignKey("components.id", ondelete="CASCADE"), nullable=True)
     plan_id = Column(Integer, ForeignKey("maintenance_plans.id", ondelete="SET NULL"), nullable=True)
@@ -83,6 +86,8 @@ class MaintenanceTask(Base):
     component = relationship("Component", back_populates="maintenance_tasks")
     plan = relationship("MaintenancePlan", back_populates="tasks")
     documentation = relationship("Documentation", back_populates="task", cascade="all, delete-orphan")
+    checklist_items = relationship("TaskChecklistItem", back_populates="task", cascade="all, delete-orphan")
+    activity_log = relationship("TaskActivityLog", back_populates="task", cascade="all, delete-orphan")
 
 
 class MaintenancePlan(Base):
@@ -99,3 +104,38 @@ class MaintenancePlan(Base):
     equipment = relationship("Equipment", back_populates="maintenance_plans")
     component = relationship("Component", back_populates="maintenance_plans")
     tasks = relationship("MaintenanceTask", back_populates="plan")
+
+
+class Translation(Base):
+    __tablename__ = "translations"
+    id = Column(Integer, primary_key=True, index=True)
+    entity_type = Column(String(50), nullable=False)
+    entity_id = Column(Integer, nullable=False)
+    field_name = Column(String(50), nullable=False)
+    lang = Column(String(10), nullable=False)
+    value = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        UniqueConstraint("entity_type", "entity_id", "field_name", "lang", name="uq_translation"),
+    )
+
+
+class TaskChecklistItem(Base):
+    __tablename__ = "task_checklist_items"
+    id = Column(Integer, primary_key=True, index=True)
+    task_id = Column(Integer, ForeignKey("maintenance_tasks.id", ondelete="CASCADE"), nullable=False)
+    text = Column(String(500), nullable=False)
+    is_completed = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    task = relationship("MaintenanceTask", back_populates="checklist_items")
+
+
+class TaskActivityLog(Base):
+    __tablename__ = "task_activity_log"
+    id = Column(Integer, primary_key=True, index=True)
+    task_id = Column(Integer, ForeignKey("maintenance_tasks.id", ondelete="CASCADE"), nullable=False)
+    action = Column(String(50), nullable=False)
+    detail = Column(Text, default="")
+    created_at = Column(DateTime, default=datetime.utcnow)
+    task = relationship("MaintenanceTask", back_populates="activity_log")
